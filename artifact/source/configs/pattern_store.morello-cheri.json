@@ -1,0 +1,96 @@
+{
+  "patterns": [
+    {
+      "name": "ir_cap_addr_get_set_to_offset_inc",
+      "stratum": "S1",
+      "level": "ir",
+      "source_pattern": "(?P<addr>%[\\w.]+)\\s*=\\s*call\\s+(?P<ity>i\\d+)\\s+@llvm\\.cheri\\.cap\\.address\\.get\\((?P<capty>[^,)]+?)\\s+(?P<cap>%[\\w.]+)\\)\\s*\\n\\s*(?P<tmp>%[\\w.]+)\\s*=\\s*add\\s+(?P=ity)\\s+(?P=addr),\\s*(?P<delta>-?\\d+|%[\\w.]+)\\s*\\n\\s*(?P<dst>%[\\w.]+)\\s*=\\s*call\\s+(?P<rty>[^@]+?)\\s*@llvm\\.cheri\\.cap\\.address\\.set\\((?P=capty)\\s+(?P=cap),\\s*(?P=ity)\\s+(?P=tmp)\\)",
+      "replacement": "{dst} = call {rty} @llvm.cheri.cap.offset.increment({capty} {cap}, {ity} {delta})",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 2.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace cap.address.get+add+cap.address.set with cap.offset.increment (S1)",
+        "witness": {
+          "before": [
+            "%addr = call i64 @llvm.cheri.cap.address.get(i8 addrspace(200)* %c)",
+            "%tmp = add i64 %addr, 16",
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.address.set(i8 addrspace(200)* %c, i64 %tmp)"
+          ],
+          "after": [
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.offset.increment(i8 addrspace(200)* %c, i64 16)"
+          ],
+          "context": [
+            "%c = call i8 addrspace(200)* @llvm.cheri.cap.bounds.set(i8 addrspace(200)* %cap, i64 256)"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: counterexample found)",
+          "preconditions": {
+            "context": [
+              "%c = call i8 addrspace(200)* @llvm.cheri.cap.bounds.set(i8 addrspace(200)* %cap, i64 256)"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "ir_cap_perms_get_and_set_to_perms_and",
+      "stratum": "S2",
+      "level": "ir",
+      "source_pattern": "(?P<perms>%[\\w.]+)\\s*=\\s*call\\s+(?P<ity>i\\d+)\\s+@llvm\\.cheri\\.cap\\.perms?\\.get\\((?P<capty>[^,)]+?)\\s+(?P<cap>%[\\w.]+)\\)\\s*\\n\\s*(?P<tmp>%[\\w.]+)\\s*=\\s*and\\s+(?P=ity)\\s+(?P=perms),\\s*(?P<mask>-?\\d+|%[\\w.]+)\\s*\\n\\s*(?P<dst>%[\\w.]+)\\s*=\\s*call\\s+(?P<rty>[^@]+?)\\s*@llvm\\.cheri\\.cap\\.perms?\\.set\\((?P=capty)\\s+(?P=cap),\\s*(?P=ity)\\s+(?P=tmp)\\)",
+      "replacement": "{dst} = call {rty} @llvm.cheri.cap.perms.and({capty} {cap}, {ity} {mask})",
+      "verification_status": "verified",
+      "cost_delta": {
+        "latency": 2.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace cap.perms.get+and+cap.perms.set with cap.perms.and (S2)",
+        "witness": {
+          "before": [
+            "%p = call i64 @llvm.cheri.cap.perms.get(i8 addrspace(200)* %cap)",
+            "%m = and i64 %p, %mask",
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.perms.set(i8 addrspace(200)* %cap, i64 %m)"
+          ],
+          "after": [
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.perms.and(i8 addrspace(200)* %cap, i64 %mask)"
+          ]
+        },
+        "verification": {
+          "status": "verified",
+          "reason": "proved by Z3"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "isa": "aarch64-morello",
+    "arch": "aarch64-morello",
+    "capopt_version": "0.1.0",
+    "created": "2026-07-16T07:03:21+00:00",
+    "max_depth": 3,
+    "counts": {
+      "verified": 1,
+      "conditional": 1,
+      "failed": 11
+    },
+    "proof_log": {
+      "ir_cap_addr_get_set_to_offset_inc": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: counterexample found)"
+      },
+      "ir_cap_perms_get_and_set_to_perms_and": {
+        "status": "verified",
+        "reason": "proved by Z3"
+      }
+    }
+  }
+}

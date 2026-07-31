@@ -1,0 +1,94 @@
+--- loop_iv-baseline
++++ loop_iv-cheri
+@@ -1,6 +1,6 @@
+ 	.text
+ 	.attribute	4, 16
+-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0"
++	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_xcheri0p0"
+ 	.file	"loop_iv.c"
+ 	.globl	sum_stride                      # -- Begin function sum_stride
+ 	.p2align	1
+@@ -8,52 +8,49 @@
+ sum_stride:                             # @sum_stride
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -64
++	cincoffset	csp, csp, -64
+ 	.cfi_def_cfa_offset 64
+-	sd	a0, 40(sp)                      # 8-byte Folded Spill
++	sc	ca0, 32(csp)                    # 16-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 48(sp)                      # 8-byte Folded Spill
++	sd	a0, 48(csp)                     # 8-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 56(sp)                      # 8-byte Folded Spill
+-	bge	a0, a1, .LBB0_3
++	sd	a2, 56(csp)                     # 8-byte Folded Spill
++	bge	a0, a1, .LBB0_2
+ 	j	.LBB0_1
+ .LBB0_1:                                # %for.body.preheader
+-	ld	a1, 40(sp)                      # 8-byte Folded Reload
+-	ld	a0, 48(sp)                      # 8-byte Folded Reload
++	ld	a0, 48(csp)                     # 8-byte Folded Reload
+ 	slli	a0, a0, 32
+-	srli	a2, a0, 32
+-	li	a0, 0
+-	sd	a2, 16(sp)                      # 8-byte Folded Spill
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
+-	j	.LBB0_4
+-.LBB0_2:                                # %for.cond.cleanup.loopexit
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
+-	sd	a0, 56(sp)                      # 8-byte Folded Spill
++	srli	a0, a0, 32
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
++	li	a1, 0
++	mv	a0, a1
++	sd	a1, 16(csp)                     # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB0_3
+-.LBB0_3:                                # %for.cond.cleanup
+-	ld	a0, 56(sp)                      # 8-byte Folded Reload
++.LBB0_2:                                # %for.cond.cleanup
++	ld	a0, 56(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	addi	sp, sp, 64
++	cincoffset	csp, csp, 64
+ 	ret
+-.LBB0_4:                                # %for.body
++.LBB0_3:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a3, 32(sp)                      # 8-byte Folded Reload
+-	ld	a2, 24(sp)                      # 8-byte Folded Reload
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
+-	lw	a1, 0(a2)
+-	addw	a1, a1, a3
+-	addi	a2, a2, 4
+-	addi	a0, a0, -1
+-	mv	a3, a1
+-	sd	a3, 8(sp)                       # 8-byte Folded Spill
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
++	ld	a3, 24(csp)                     # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
++	lc	ca2, 32(csp)                    # 16-byte Folded Reload
++	slli	a4, a0, 2
++	cincoffset	ca2, ca2, a4
++	lw	a2, 0(ca2)
++	addw	a2, a2, a3
++	addi	a0, a0, 1
++	mv	a3, a2
++	sd	a3, 56(csp)                     # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 16(sp)                      # 8-byte Folded Spill
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
+-	sd	a1, 32(sp)                      # 8-byte Folded Spill
+-	beqz	a0, .LBB0_2
+-	j	.LBB0_4
++	sd	a3, 16(csp)                     # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
++	beq	a0, a1, .LBB0_2
++	j	.LBB0_3
+ .Lfunc_end0:
+ 	.size	sum_stride, .Lfunc_end0-sum_stride
+ 	.cfi_endproc

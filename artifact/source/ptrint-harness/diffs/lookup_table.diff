@@ -1,0 +1,90 @@
+--- lookup_table-baseline
++++ lookup_table-cheri
+@@ -1,6 +1,6 @@
+ 	.text
+ 	.attribute	4, 16
+-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0"
++	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_xcheri0p0"
+ 	.file	"lookup_table.cpp"
+ 	.globl	dispatch                        # -- Begin function dispatch
+ 	.p2align	1
+@@ -8,40 +8,41 @@
+ dispatch:                               # @dispatch
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -48
++	cincoffset	csp, csp, -48
+ 	.cfi_def_cfa_offset 48
+-	sd	ra, 40(sp)                      # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a1, 8(sp)                       # 8-byte Folded Spill
++	sc	cra, 32(csp)                    # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sd	a1, 0(csp)                      # 8-byte Folded Spill
+ 	mv	a1, a0
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
+-	sd	a0, 16(sp)                      # 8-byte Folded Spill
++	ld	a0, 0(csp)                      # 8-byte Folded Reload
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 16(csp)                     # 8-byte Folded Spill
+ 	li	a2, -999
+ 	li	a0, 1
+-	sd	a2, 32(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	bltu	a0, a1, .LBB0_2
+ 	j	.LBB0_1
+ .LBB0_1:                                # %if.end
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
+-	ld	a1, 24(sp)                      # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
++	ld	a1, 16(csp)                     # 8-byte Folded Reload
+ 	slli	a1, a1, 32
+-	srli	a2, a1, 29
+-.Lpcrel_hi0:
+-	auipc	a1, %pcrel_hi(_ZN12_GLOBAL__N_114dispatch_tableE)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi0)
+-	add	a1, a1, a2
+-	ld	a1, 0(a1)
++	srli	a2, a1, 28
++.LBB0_3:                                # %if.end
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZN12_GLOBAL__N_114dispatch_tableE)
++	lc	ca1, %pcrel_lo(.LBB0_3)(ca1)
++	cincoffset	ca1, ca1, a2
++	lc	ca1, 0(ca1)
+ 	sext.w	a0, a0
+-	jalr	a1
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
++	jalr	ca1
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB0_2
+ .LBB0_2:                                # %return
+-	ld	a0, 32(sp)                      # 8-byte Folded Reload
++	ld	a0, 24(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 40(sp)                      # 8-byte Folded Reload
+-	addi	sp, sp, 48
++	lc	cra, 32(csp)                    # 16-byte Folded Reload
++	cincoffset	csp, csp, 48
+ 	ret
+ .Lfunc_end0:
+ 	.size	dispatch, .Lfunc_end0-dispatch
+@@ -72,12 +73,12 @@
+ 	.cfi_endproc
+                                         # -- End function
+ 	.type	_ZN12_GLOBAL__N_114dispatch_tableE,@object # @_ZN12_GLOBAL__N_114dispatch_tableE
+-	.section	.rodata,"a",@progbits
++	.section	.data.rel.ro,"aw",@progbits
+ 	.p2align	4, 0x0
+ _ZN12_GLOBAL__N_114dispatch_tableE:
+-	.quad	_ZN12_GLOBAL__N_13incEi
+-	.quad	_ZN12_GLOBAL__N_13decEi
+-	.size	_ZN12_GLOBAL__N_114dispatch_tableE, 16
++	.chericap	_ZN12_GLOBAL__N_13incEi
++	.chericap	_ZN12_GLOBAL__N_13decEi
++	.size	_ZN12_GLOBAL__N_114dispatch_tableE, 32
+ 
+ 	.ident	"clang version 17.0.0 (https://github.com/CTSRD-CHERI/llvm-project.git 9e82d2969a6213554f973e64fb5a5895db59e024)"
+ 	.section	".note.GNU-stack","",@progbits

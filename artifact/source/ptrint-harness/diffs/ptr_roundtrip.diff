@@ -1,0 +1,29 @@
+--- ptr_roundtrip-baseline
++++ ptr_roundtrip-cheri
+@@ -1,6 +1,6 @@
+ 	.text
+ 	.attribute	4, 16
+-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0"
++	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_xcheri0p0"
+ 	.file	"ptr_roundtrip.c"
+ 	.globl	bump_pointer                    # -- Begin function bump_pointer
+ 	.p2align	1
+@@ -8,15 +8,9 @@
+ bump_pointer:                           # @bump_pointer
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -16
+-	.cfi_def_cfa_offset 16
+-	sd	a1, 8(sp)                       # 8-byte Folded Spill
+-	mv	a1, a0
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
+-                                        # kill: def $x12 killed $x10
+-	slliw	a0, a0, 2
+-	add	a0, a0, a1
+-	addi	sp, sp, 16
++                                        # kill: def $x12 killed $x11
++	slliw	a1, a1, 2
++	cincoffset	ca0, ca0, a1
+ 	ret
+ .Lfunc_end0:
+ 	.size	bump_pointer, .Lfunc_end0-bump_pointer

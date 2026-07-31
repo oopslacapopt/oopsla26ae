@@ -1,0 +1,1971 @@
+--- combined_opts-baseline
++++ combined_opts-cheri
+@@ -1,6 +1,6 @@
+ 	.text
+ 	.attribute	4, 16
+-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0"
++	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_xcheri0p0"
+ 	.file	"combined_opts.cpp"
+ 	.section	.text._ZN8IHandlerD2Ev,"axG",@progbits,_ZN8IHandlerD2Ev,comdat
+ 	.hidden	_ZN8IHandlerD2Ev                # -- Begin function _ZN8IHandlerD2Ev
+@@ -23,344 +23,348 @@
+ run_combined_opts:                      # @run_combined_opts
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -400
+-	.cfi_def_cfa_offset 400
+-	sd	ra, 392(sp)                     # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a2, 352(sp)                     # 8-byte Folded Spill
+-	sd	a1, 336(sp)                     # 8-byte Folded Spill
+-	sd	a0, 344(sp)                     # 8-byte Folded Spill
++	cincoffset	csp, csp, -464
++	.cfi_def_cfa_offset 464
++	sc	cra, 448(csp)                   # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sd	a2, 392(csp)                    # 8-byte Folded Spill
++	sd	a1, 360(csp)                    # 8-byte Folded Spill
++	sc	ca0, 368(csp)                   # 16-byte Folded Spill
+                                         # kill: def $x13 killed $x12
+ 	mv	a3, a1
+-	sd	a3, 312(sp)                     # 8-byte Folded Spill
+-	call	_ZL21process_virtual_batchPiii
+-	ld	a1, 336(sp)                     # 8-byte Folded Reload
++	sd	a3, 336(csp)                    # 8-byte Folded Spill
++	ccall	_ZL21process_virtual_batchPiii
++	ld	a1, 360(csp)                    # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 344(sp)                     # 8-byte Folded Reload
+-	sd	a2, 320(sp)                     # 8-byte Folded Spill
+-	call	_ZL22process_function_tablePii
+-	ld	a3, 320(sp)                     # 8-byte Folded Reload
+-	ld	a1, 336(sp)                     # 8-byte Folded Reload
++	lc	ca0, 368(csp)                   # 16-byte Folded Reload
++	sd	a2, 344(csp)                    # 8-byte Folded Spill
++	ccall	_ZL22process_function_tablePii
++	ld	a3, 344(csp)                    # 8-byte Folded Reload
++	ld	a1, 360(csp)                    # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 344(sp)                     # 8-byte Folded Reload
++	lc	ca0, 368(csp)                   # 16-byte Folded Reload
+ 	xor	a2, a2, a3
+-	sd	a2, 328(sp)                     # 8-byte Folded Spill
+-	call	_ZL20process_switch_batchPii
+-	ld	a3, 328(sp)                     # 8-byte Folded Reload
+-	ld	a1, 336(sp)                     # 8-byte Folded Reload
+-	ld	a2, 352(sp)                     # 8-byte Folded Reload
++	sd	a2, 352(csp)                    # 8-byte Folded Spill
++	ccall	_ZL20process_switch_batchPii
++	ld	a3, 352(csp)                    # 8-byte Folded Reload
++	ld	a1, 360(csp)                    # 8-byte Folded Reload
++	ld	a2, 392(csp)                    # 8-byte Folded Reload
+ 	mv	a4, a0
+-	ld	a0, 344(sp)                     # 8-byte Folded Reload
++	lc	ca0, 368(csp)                   # 16-byte Folded Reload
+ 	addw	a3, a3, a4
+-	sd	a3, 360(sp)                     # 8-byte Folded Spill
+-	call	_ZL16complex_dispatchPiii
+-	ld	a2, 352(sp)                     # 8-byte Folded Reload
+-	mv	a1, a0
+-	ld	a0, 360(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 368(sp)                     # 8-byte Folded Spill
++	sd	a3, 400(csp)                    # 8-byte Folded Spill
++	ccall	_ZL16complex_dispatchPiii
++	ld	a2, 392(csp)                    # 8-byte Folded Reload
++	mv	a1, a0
++	ld	a0, 400(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 408(csp)                    # 8-byte Folded Spill
+ 	andi	a0, a2, 2
+-.Lpcrel_hi0:
+-	auipc	a1, %pcrel_hi(_ZL2h2)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi0)
+-	sd	a1, 376(sp)                     # 8-byte Folded Spill
+-.Lpcrel_hi1:
+-	auipc	a1, %pcrel_hi(_ZL2h3)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi1)
+-	sd	a1, 384(sp)                     # 8-byte Folded Spill
++.LBB1_6:                                # %entry
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL2h2)
++	lc	ca1, %pcrel_lo(.LBB1_6)(ca1)
++	sc	ca1, 416(csp)                   # 16-byte Folded Spill
++.LBB1_7:                                # %entry
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL2h3)
++	lc	ca1, %pcrel_lo(.LBB1_7)(ca1)
++	sc	ca1, 432(csp)                   # 16-byte Folded Spill
+ 	beqz	a0, .LBB1_2
+ # %bb.1:                                # %entry
+-	ld	a0, 376(sp)                     # 8-byte Folded Reload
+-	sd	a0, 384(sp)                     # 8-byte Folded Spill
++	lc	ca0, 416(csp)                   # 16-byte Folded Reload
++	sc	ca0, 432(csp)                   # 16-byte Folded Spill
+ .LBB1_2:                                # %entry
+-	ld	a1, 336(sp)                     # 8-byte Folded Reload
+-	ld	a2, 368(sp)                     # 8-byte Folded Reload
+-	ld	a0, 384(sp)                     # 8-byte Folded Reload
+-	sd	a0, 296(sp)                     # 8-byte Folded Spill
++	ld	a1, 360(csp)                    # 8-byte Folded Reload
++	ld	a2, 408(csp)                    # 8-byte Folded Reload
++	lc	ca0, 432(csp)                   # 16-byte Folded Reload
++	sc	ca0, 304(csp)                   # 16-byte Folded Spill
+ 	li	a0, 0
+-	sd	a2, 304(sp)                     # 8-byte Folded Spill
++	sd	a2, 328(csp)                    # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB1_4
+ 	j	.LBB1_3
+ .LBB1_3:                                # %for.body.preheader
+-	ld	a0, 368(sp)                     # 8-byte Folded Reload
+-	ld	a1, 312(sp)                     # 8-byte Folded Reload
++	ld	a0, 408(csp)                    # 8-byte Folded Reload
++	ld	a1, 336(csp)                    # 8-byte Folded Reload
+ 	slli	a1, a1, 32
+ 	srli	a1, a1, 32
+-	sd	a1, 272(sp)                     # 8-byte Folded Spill
++	sd	a1, 280(csp)                    # 8-byte Folded Spill
+ 	li	a1, 0
+-	sd	a1, 280(sp)                     # 8-byte Folded Spill
+-	sd	a0, 288(sp)                     # 8-byte Folded Spill
++	sd	a1, 288(csp)                    # 8-byte Folded Spill
++	sd	a0, 296(csp)                    # 8-byte Folded Spill
+ 	j	.LBB1_5
+ .LBB1_4:                                # %for.cond9.preheader
+-	ld	a0, 304(sp)                     # 8-byte Folded Reload
+-	slliw	a0, a0, 1
+-	addw	a0, a0, a0
++	ld	a0, 328(csp)                    # 8-byte Folded Reload
++	slli	a0, a0, 1
++	add	a0, a0, a0
+ 	slliw	a0, a0, 2
+-	addiw	a1, a0, 53
++	addi	a1, a0, 53
+ 	srliw	a2, a1, 31
+-	addw	a1, a1, a2
++	add	a1, a1, a2
+ 	sraiw	a1, a1, 1
+-	addw	a0, a0, a1
++	add	a0, a0, a1
+ 	addiw	a1, a0, 50
+ 	addiw	a0, a0, 54
+ 	xori	a0, a0, 170
+-	addw	a1, a1, a0
+-	addiw	a0, a1, 5
++	addw	a2, a0, a1
++	add	a0, a0, a1
++	addi	a0, a0, 5
+ 	andi	a0, a0, 255
+-	addw	a1, a1, a0
+-	addiw	a0, a1, 6
++	addw	a1, a0, a2
++	add	a0, a0, a2
++	addiw	a0, a0, 6
+ 	ori	a0, a0, 256
+-	addw	a0, a0, a1
+-	slliw	a1, a0, 2
+-	addw	a0, a0, a1
++	add	a0, a0, a1
++	slli	a1, a0, 2
++	add	a0, a0, a1
+ 	addiw	a1, a0, 28
+-	sd	a1, 16(sp)                      # 8-byte Folded Spill
++	sd	a1, 24(csp)                     # 8-byte Folded Spill
+ 	li	a0, 0
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 24(csp)                     # 8-byte Folded Reload
+ 	xor	a1, a1, a0
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
++	sd	a1, 32(csp)                     # 8-byte Folded Spill
+ 	li	a0, 1
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 24(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 32(csp)                     # 8-byte Folded Reload
+ 	xor	a1, a1, a0
+-	sd	a1, 32(sp)                      # 8-byte Folded Spill
++	sd	a1, 40(csp)                     # 8-byte Folded Spill
+ 	li	a0, 2
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 32(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 40(csp)                     # 8-byte Folded Reload
+ 	xor	a1, a1, a0
+-	sd	a1, 40(sp)                      # 8-byte Folded Spill
++	sd	a1, 48(csp)                     # 8-byte Folded Spill
+ 	li	a0, 3
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 40(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 48(csp)                     # 8-byte Folded Reload
+ 	xor	a1, a1, a0
+-	sd	a1, 48(sp)                      # 8-byte Folded Spill
++	sd	a1, 56(csp)                     # 8-byte Folded Spill
+ 	li	a0, 4
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 48(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 56(csp)                     # 8-byte Folded Reload
+ 	xor	a1, a1, a0
+-	sd	a1, 56(sp)                      # 8-byte Folded Spill
++	sd	a1, 64(csp)                     # 8-byte Folded Spill
+ 	li	a0, 5
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 56(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 64(sp)                      # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 64(csp)                     # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 72(csp)                     # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 6
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 64(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 72(csp)                     # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 80(csp)                     # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 7
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 72(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 80(sp)                      # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 80(csp)                     # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 88(csp)                     # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 8
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 88(sp)                      # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 88(csp)                     # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 96(csp)                     # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 9
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 96(sp)                      # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 96(csp)                     # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 104(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 10
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 96(sp)                      # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 104(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 104(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 112(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 11
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 104(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 112(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 112(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 120(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 12
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 112(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 120(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 120(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 128(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 13
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 120(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 128(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 128(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 136(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 14
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 128(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 136(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 136(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 144(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 15
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 136(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 144(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 144(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 152(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 16
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 144(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 152(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 152(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 160(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 17
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 152(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 160(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 160(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 168(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 18
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 160(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 168(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 168(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 176(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 19
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 168(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 176(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 176(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 184(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 20
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 176(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 184(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 184(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 192(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 21
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 184(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 192(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 192(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 200(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 22
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 192(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 200(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 200(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 208(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 23
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 200(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 208(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 208(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 216(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 24
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 208(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 216(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 216(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 224(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 25
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 216(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 224(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 224(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 232(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 26
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 224(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 232(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 232(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 240(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 27
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 232(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 240(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 240(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 248(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 28
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 240(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 248(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 248(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 256(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 29
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 248(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 256(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 256(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 264(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 30
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 256(sp)                     # 8-byte Folded Reload
+-	xor	a0, a0, a1
+-	sd	a0, 264(sp)                     # 8-byte Folded Spill
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 264(csp)                    # 8-byte Folded Reload
++	xor	a0, a0, a1
++	sd	a0, 272(csp)                    # 8-byte Folded Spill
+ 	sext.w	a1, a0
+ 	li	a0, 31
+-	call	_ZL16dispatch_by_typeii
+-	mv	a1, a0
+-	ld	a0, 264(sp)                     # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	mv	a1, a0
++	ld	a0, 272(csp)                    # 8-byte Folded Reload
+ 	xor	a0, a0, a1
+ 	sext.w	a0, a0
+-	ld	ra, 392(sp)                     # 8-byte Folded Reload
+-	addi	sp, sp, 400
++	lc	cra, 448(csp)                   # 16-byte Folded Reload
++	cincoffset	csp, csp, 464
+ 	ret
+ .LBB1_5:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a3, 288(sp)                     # 8-byte Folded Reload
+-	ld	a2, 280(sp)                     # 8-byte Folded Reload
+-	ld	a0, 296(sp)                     # 8-byte Folded Reload
+-	ld	a1, 344(sp)                     # 8-byte Folded Reload
+-	sd	a3, 0(sp)                       # 8-byte Folded Spill
+-	sd	a2, 8(sp)                       # 8-byte Folded Spill
++	ld	a3, 296(csp)                    # 8-byte Folded Reload
++	ld	a2, 288(csp)                    # 8-byte Folded Reload
++	lc	ca0, 304(csp)                   # 16-byte Folded Reload
++	lc	ca1, 368(csp)                   # 16-byte Folded Reload
++	sd	a3, 8(csp)                      # 8-byte Folded Spill
++	sd	a2, 16(csp)                     # 8-byte Folded Spill
+ 	slli	a2, a2, 2
+-	add	a1, a1, a2
+-	lw	a1, 0(a1)
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	ld	a3, 0(sp)                       # 8-byte Folded Reload
+-	ld	a1, 272(sp)                     # 8-byte Folded Reload
++	cincoffset	ca1, ca1, a2
++	lw	a1, 0(ca1)
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	ld	a3, 8(csp)                      # 8-byte Folded Reload
++	ld	a1, 280(csp)                    # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	xor	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 304(sp)                     # 8-byte Folded Spill
++	sd	a3, 328(csp)                    # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 280(sp)                     # 8-byte Folded Spill
+-	sd	a2, 288(sp)                     # 8-byte Folded Spill
++	sd	a3, 288(csp)                    # 8-byte Folded Spill
++	sd	a2, 296(csp)                    # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB1_4
+ 	j	.LBB1_5
+ .Lfunc_end1:
+@@ -372,107 +376,110 @@
+ _ZL21process_virtual_batchPiii:         # @_ZL21process_virtual_batchPiii
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -112
+-	.cfi_def_cfa_offset 112
+-	sd	ra, 104(sp)                     # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
++	cincoffset	csp, csp, -160
++	.cfi_def_cfa_offset 160
++	sc	cra, 144(csp)                   # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sc	ca0, 80(csp)                    # 16-byte Folded Spill
+                                         # kill: def $x10 killed $x12
+ 	mv	a0, a1
+-	sd	a0, 80(sp)                      # 8-byte Folded Spill
++	sd	a0, 104(csp)                    # 8-byte Folded Spill
+ 	lui	a0, 349525
+ 	addiw	a0, a0, 1366
+ 	mul	a0, a2, a0
+ 	srli	a3, a0, 63
+ 	srli	a0, a0, 32
+-	addw	a3, a3, a0
+-	slliw	a0, a3, 1
+-	addw	a0, a0, a3
++	add	a3, a3, a0
++	slli	a0, a3, 1
++	add	a0, a0, a3
+ 	subw	a0, a2, a0
+-	slli	a2, a0, 3
+-.Lpcrel_hi2:
+-	auipc	a0, %pcrel_hi(.L__const._ZL21process_virtual_batchPiii.handlers)
+-	addi	a0, a0, %pcrel_lo(.Lpcrel_hi2)
+-	add	a0, a0, a2
+-	ld	a0, 0(a0)
+-	sd	a0, 88(sp)                      # 8-byte Folded Spill
++	slli	a2, a0, 4
++.LBB2_4:                                # %entry
++                                        # Label of block must be emitted
++	auipcc	ca0, %got_pcrel_hi(.L__const._ZL21process_virtual_batchPiii.handlers)
++	lc	ca0, %pcrel_lo(.LBB2_4)(ca0)
++	cincoffset	ca0, ca0, a2
++	lc	ca0, 0(ca0)
++	sc	ca0, 112(csp)                   # 16-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 96(sp)                      # 8-byte Folded Spill
++	sd	a2, 136(csp)                    # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB2_2
+ 	j	.LBB2_1
+ .LBB2_1:                                # %for.body.preheader
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
++	ld	a0, 104(csp)                    # 8-byte Folded Reload
+ 	slli	a0, a0, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 48(sp)                      # 8-byte Folded Spill
++	sd	a0, 56(csp)                     # 8-byte Folded Spill
+ 	li	a1, 0
+ 	mv	a0, a1
+-	sd	a1, 56(sp)                      # 8-byte Folded Spill
+-	sd	a0, 64(sp)                      # 8-byte Folded Spill
++	sd	a1, 64(csp)                     # 8-byte Folded Spill
++	sd	a0, 72(csp)                     # 8-byte Folded Spill
+ 	j	.LBB2_3
+ .LBB2_2:                                # %for.cond.cleanup
+-	ld	a0, 96(sp)                      # 8-byte Folded Reload
++	ld	a0, 136(csp)                    # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 104(sp)                     # 8-byte Folded Reload
+-	addi	sp, sp, 112
++	lc	cra, 144(csp)                   # 16-byte Folded Reload
++	cincoffset	csp, csp, 160
+ 	ret
+ .LBB2_3:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a3, 64(sp)                      # 8-byte Folded Reload
+-	ld	a2, 56(sp)                      # 8-byte Folded Reload
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
+-	ld	a1, 72(sp)                      # 8-byte Folded Reload
+-	sd	a3, 0(sp)                       # 8-byte Folded Spill
+-	sd	a2, 40(sp)                      # 8-byte Folded Spill
++	ld	a3, 72(csp)                     # 8-byte Folded Reload
++	ld	a2, 64(csp)                     # 8-byte Folded Reload
++	lc	ca0, 112(csp)                   # 16-byte Folded Reload
++	lc	ca1, 80(csp)                    # 16-byte Folded Reload
++	sd	a3, 0(csp)                      # 8-byte Folded Spill
++	sd	a2, 48(csp)                     # 8-byte Folded Spill
+ 	slli	a2, a2, 2
+-	add	a1, a1, a2
+-	sd	a1, 16(sp)                      # 8-byte Folded Spill
+-	lw	a1, 0(a1)
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	ld	a2, 0(sp)                       # 8-byte Folded Reload
+-	mv	a1, a0
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
++	cincoffset	ca1, ca1, a2
++	sc	ca1, 16(csp)                    # 16-byte Folded Spill
++	lw	a1, 0(ca1)
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	ld	a2, 0(csp)                      # 8-byte Folded Reload
++	mv	a1, a0
++	lc	ca0, 112(csp)                   # 16-byte Folded Reload
++	add	a3, a1, a2
++	sd	a3, 8(csp)                      # 8-byte Folded Spill
+ 	addw	a1, a1, a2
+-	sd	a1, 8(sp)                       # 8-byte Folded Spill
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	ld	a4, 8(sp)                       # 8-byte Folded Reload
+-	ld	a1, 16(sp)                      # 8-byte Folded Reload
+-	ld	a2, 40(sp)                      # 8-byte Folded Reload
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	ld	a4, 8(csp)                      # 8-byte Folded Reload
++	lc	ca1, 16(csp)                    # 16-byte Folded Reload
++	ld	a2, 48(csp)                     # 8-byte Folded Reload
+ 	mv	a3, a0
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
++	lc	ca0, 112(csp)                   # 16-byte Folded Reload
+ 	xor	a3, a3, a4
+-	sd	a3, 24(sp)                      # 8-byte Folded Spill
+-	lw	a1, 0(a1)
++	sd	a3, 32(csp)                     # 8-byte Folded Spill
++	lw	a1, 0(ca1)
+ 	addw	a1, a1, a2
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	ld	a3, 24(sp)                      # 8-byte Folded Reload
+-	ld	a2, 40(sp)                      # 8-byte Folded Reload
+-	mv	a1, a0
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
+-	addw	a1, a1, a3
+-	sd	a1, 32(sp)                      # 8-byte Folded Spill
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	ld	a3, 32(csp)                     # 8-byte Folded Reload
++	ld	a2, 48(csp)                     # 8-byte Folded Reload
++	mv	a1, a0
++	lc	ca0, 112(csp)                   # 16-byte Folded Reload
++	addw	a4, a1, a3
++	sd	a4, 40(csp)                     # 8-byte Folded Spill
++	add	a1, a1, a3
+ 	subw	a1, a1, a2
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	ld	a3, 32(sp)                      # 8-byte Folded Reload
+-	ld	a1, 48(sp)                      # 8-byte Folded Reload
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	ld	a3, 40(csp)                     # 8-byte Folded Reload
++	ld	a1, 56(csp)                     # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 40(sp)                      # 8-byte Folded Reload
++	ld	a0, 48(csp)                     # 8-byte Folded Reload
+ 	xor	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 96(sp)                      # 8-byte Folded Spill
++	sd	a3, 136(csp)                    # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 56(sp)                      # 8-byte Folded Spill
+-	sd	a2, 64(sp)                      # 8-byte Folded Spill
++	sd	a3, 64(csp)                     # 8-byte Folded Spill
++	sd	a2, 72(csp)                     # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB2_2
+ 	j	.LBB2_3
+ .Lfunc_end2:
+@@ -484,95 +491,98 @@
+ _ZL22process_function_tablePii:         # @_ZL22process_function_tablePii
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -112
+-	.cfi_def_cfa_offset 112
+-	sd	ra, 104(sp)                     # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a0, 80(sp)                      # 8-byte Folded Spill
++	cincoffset	csp, csp, -160
++	.cfi_def_cfa_offset 160
++	sc	cra, 144(csp)                   # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sc	ca0, 112(csp)                   # 16-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 88(sp)                      # 8-byte Folded Spill
++	sd	a0, 128(csp)                    # 8-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 96(sp)                      # 8-byte Folded Spill
++	sd	a2, 136(csp)                    # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB3_2
+ 	j	.LBB3_1
+ .LBB3_1:                                # %for.body.preheader
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
++	ld	a0, 128(csp)                    # 8-byte Folded Reload
+ 	slli	a0, a0, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 56(sp)                      # 8-byte Folded Spill
++	sd	a0, 88(csp)                     # 8-byte Folded Spill
+ 	li	a1, 0
+ 	mv	a0, a1
+-	sd	a1, 64(sp)                      # 8-byte Folded Spill
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
++	sd	a1, 96(csp)                     # 8-byte Folded Spill
++	sd	a0, 104(csp)                    # 8-byte Folded Spill
+ 	j	.LBB3_3
+ .LBB3_2:                                # %for.cond.cleanup
+-	ld	a0, 96(sp)                      # 8-byte Folded Reload
++	ld	a0, 136(csp)                    # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 104(sp)                     # 8-byte Folded Reload
+-	addi	sp, sp, 112
++	lc	cra, 144(csp)                   # 16-byte Folded Reload
++	cincoffset	csp, csp, 160
+ 	ret
+ .LBB3_3:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a1, 72(sp)                      # 8-byte Folded Reload
+-	ld	a2, 64(sp)                      # 8-byte Folded Reload
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
+-	sd	a1, 0(sp)                       # 8-byte Folded Spill
+-	sd	a2, 48(sp)                      # 8-byte Folded Spill
+-	slliw	a1, a2, 3
+-	subw	a1, a1, a2
+-	sd	a1, 16(sp)                      # 8-byte Folded Spill
++	ld	a1, 104(csp)                    # 8-byte Folded Reload
++	ld	a2, 96(csp)                     # 8-byte Folded Reload
++	lc	ca0, 112(csp)                   # 16-byte Folded Reload
++	sd	a1, 8(csp)                      # 8-byte Folded Spill
++	sd	a2, 80(csp)                     # 8-byte Folded Spill
++	slli	a1, a2, 3
++	sub	a1, a1, a2
++	sd	a1, 24(csp)                     # 8-byte Folded Spill
+ 	andi	a1, a1, 7
+-	slli	a3, a1, 3
+-.Lpcrel_hi3:
+-	auipc	a1, %pcrel_hi(_ZL14function_table)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi3)
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
+-	add	a1, a1, a3
+-	ld	a1, 0(a1)
++	slli	a3, a1, 4
++.LBB3_4:                                # %for.body
++                                        #   in Loop: Header=BB3_3 Depth=1
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL14function_table)
++	lc	ca1, %pcrel_lo(.LBB3_4)(ca1)
++	sc	ca1, 32(csp)                    # 16-byte Folded Spill
++	cincoffset	ca1, ca1, a3
++	lc	ca1, 0(ca1)
+ 	slli	a2, a2, 2
+-	add	a0, a0, a2
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
+-	lw	a0, 0(a0)
+-	jalr	a1
+-	ld	a3, 0(sp)                       # 8-byte Folded Reload
+-	ld	a2, 16(sp)                      # 8-byte Folded Reload
+-	ld	a1, 24(sp)                      # 8-byte Folded Reload
++	cincoffset	ca0, ca0, a2
++	sc	ca0, 48(csp)                    # 16-byte Folded Spill
++	lw	a0, 0(ca0)
++	jalr	ca1
++	ld	a3, 8(csp)                      # 8-byte Folded Reload
++	ld	a2, 24(csp)                     # 8-byte Folded Reload
++	lc	ca1, 32(csp)                    # 16-byte Folded Reload
++	add	a4, a0, a3
++	sd	a4, 16(csp)                     # 8-byte Folded Spill
+ 	addw	a0, a0, a3
+-	sd	a0, 8(sp)                       # 8-byte Folded Spill
+-	addiw	a2, a2, 1
++	addi	a2, a2, 1
+ 	andi	a2, a2, 7
+-	slli	a2, a2, 3
+-	add	a1, a1, a2
+-	ld	a1, 0(a1)
+-	jalr	a1
+-	ld	a5, 8(sp)                       # 8-byte Folded Reload
+-	ld	a3, 16(sp)                      # 8-byte Folded Reload
+-	ld	a1, 24(sp)                      # 8-byte Folded Reload
+-	ld	a2, 48(sp)                      # 8-byte Folded Reload
++	slli	a2, a2, 4
++	cincoffset	ca1, ca1, a2
++	lc	ca1, 0(ca1)
++	jalr	ca1
++	ld	a5, 16(csp)                     # 8-byte Folded Reload
++	ld	a3, 24(csp)                     # 8-byte Folded Reload
++	lc	ca1, 32(csp)                    # 16-byte Folded Reload
++	ld	a2, 80(csp)                     # 8-byte Folded Reload
+ 	mv	a4, a0
+-	ld	a0, 32(sp)                      # 8-byte Folded Reload
++	lc	ca0, 48(csp)                    # 16-byte Folded Reload
+ 	xor	a4, a4, a5
+-	sd	a4, 40(sp)                      # 8-byte Folded Spill
+-	addiw	a3, a3, 2
++	sd	a4, 72(csp)                     # 8-byte Folded Spill
++	addi	a3, a3, 2
+ 	andi	a3, a3, 7
+-	slli	a3, a3, 3
+-	add	a1, a1, a3
+-	ld	a1, 0(a1)
+-	lw	a0, 0(a0)
++	slli	a3, a3, 4
++	cincoffset	ca1, ca1, a3
++	lc	ca1, 0(ca1)
++	lw	a0, 0(ca0)
+ 	addw	a0, a0, a2
+-	jalr	a1
+-	ld	a3, 40(sp)                      # 8-byte Folded Reload
+-	ld	a1, 56(sp)                      # 8-byte Folded Reload
++	jalr	ca1
++	ld	a3, 72(csp)                     # 8-byte Folded Reload
++	ld	a1, 88(csp)                     # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 48(sp)                      # 8-byte Folded Reload
++	ld	a0, 80(csp)                     # 8-byte Folded Reload
+ 	addw	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 96(sp)                      # 8-byte Folded Spill
++	sd	a3, 136(csp)                    # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 64(sp)                      # 8-byte Folded Spill
+-	sd	a2, 72(sp)                      # 8-byte Folded Spill
++	sd	a3, 96(csp)                     # 8-byte Folded Spill
++	sd	a2, 104(csp)                    # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB3_2
+ 	j	.LBB3_3
+ .Lfunc_end3:
+@@ -584,75 +594,76 @@
+ _ZL20process_switch_batchPii:           # @_ZL20process_switch_batchPii
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -112
+-	.cfi_def_cfa_offset 112
+-	sd	ra, 104(sp)                     # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a0, 80(sp)                      # 8-byte Folded Spill
++	cincoffset	csp, csp, -128
++	.cfi_def_cfa_offset 128
++	sc	cra, 112(csp)                   # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sc	ca0, 80(csp)                    # 16-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 88(sp)                      # 8-byte Folded Spill
++	sd	a0, 96(csp)                     # 8-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 96(sp)                      # 8-byte Folded Spill
++	sd	a2, 104(csp)                    # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB4_2
+ 	j	.LBB4_1
+ .LBB4_1:                                # %for.body.preheader
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
++	ld	a0, 96(csp)                     # 8-byte Folded Reload
+ 	slli	a0, a0, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 56(sp)                      # 8-byte Folded Spill
++	sd	a0, 56(csp)                     # 8-byte Folded Spill
+ 	li	a1, 0
+ 	mv	a0, a1
+-	sd	a1, 64(sp)                      # 8-byte Folded Spill
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
++	sd	a1, 64(csp)                     # 8-byte Folded Spill
++	sd	a0, 72(csp)                     # 8-byte Folded Spill
+ 	j	.LBB4_3
+ .LBB4_2:                                # %for.cond.cleanup
+-	ld	a0, 96(sp)                      # 8-byte Folded Reload
++	ld	a0, 104(csp)                    # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 104(sp)                     # 8-byte Folded Reload
+-	addi	sp, sp, 112
++	lc	cra, 112(csp)                   # 16-byte Folded Reload
++	cincoffset	csp, csp, 128
+ 	ret
+ .LBB4_3:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a2, 72(sp)                      # 8-byte Folded Reload
+-	ld	a1, 64(sp)                      # 8-byte Folded Reload
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
+-	sd	a2, 8(sp)                       # 8-byte Folded Spill
+-	sd	a1, 48(sp)                      # 8-byte Folded Spill
++	ld	a2, 72(csp)                     # 8-byte Folded Reload
++	ld	a1, 64(csp)                     # 8-byte Folded Reload
++	lc	ca0, 80(csp)                    # 16-byte Folded Reload
++	sd	a2, 8(csp)                      # 8-byte Folded Spill
++	sd	a1, 48(csp)                     # 8-byte Folded Spill
+ 	slli	a1, a1, 2
+-	add	a0, a0, a1
+-	lw	a1, 0(a0)
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
++	cincoffset	ca0, ca0, a1
++	lw	a1, 0(ca0)
++	sd	a1, 24(csp)                     # 8-byte Folded Spill
+ 	srliw	a0, a1, 8
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
++	sd	a0, 32(csp)                     # 8-byte Folded Spill
+ 	andi	a0, a0, 31
+-	call	_ZL16dispatch_by_typeii
+-	ld	a1, 8(sp)                       # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
++	add	a2, a0, a1
++	sd	a2, 16(csp)                     # 8-byte Folded Spill
+ 	addw	a0, a0, a1
+-	sd	a0, 16(sp)                      # 8-byte Folded Spill
+-	call	_ZL14classify_rangei
+-	ld	a3, 16(sp)                      # 8-byte Folded Reload
+-	ld	a1, 24(sp)                      # 8-byte Folded Reload
+-	ld	a2, 48(sp)                      # 8-byte Folded Reload
++	ccall	_ZL14classify_rangei
++	ld	a3, 16(csp)                     # 8-byte Folded Reload
++	ld	a1, 24(csp)                     # 8-byte Folded Reload
++	ld	a2, 48(csp)                     # 8-byte Folded Reload
+ 	mv	a4, a0
+-	ld	a0, 32(sp)                      # 8-byte Folded Reload
++	ld	a0, 32(csp)                     # 8-byte Folded Reload
+ 	xor	a3, a3, a4
+-	sd	a3, 40(sp)                      # 8-byte Folded Spill
+-	addiw	a0, a0, 1
++	sd	a3, 40(csp)                     # 8-byte Folded Spill
++	addi	a0, a0, 1
+ 	andi	a0, a0, 31
+ 	addw	a1, a1, a2
+-	call	_ZL16dispatch_by_typeii
+-	ld	a2, 40(sp)                      # 8-byte Folded Reload
+-	ld	a1, 56(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	ld	a2, 40(csp)                     # 8-byte Folded Reload
++	ld	a1, 56(csp)                     # 8-byte Folded Reload
+ 	mv	a3, a0
+-	ld	a0, 48(sp)                      # 8-byte Folded Reload
++	ld	a0, 48(csp)                     # 8-byte Folded Reload
+ 	addw	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 96(sp)                      # 8-byte Folded Spill
++	sd	a3, 104(csp)                    # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 64(sp)                      # 8-byte Folded Spill
+-	sd	a2, 72(sp)                      # 8-byte Folded Spill
++	sd	a3, 64(csp)                     # 8-byte Folded Spill
++	sd	a2, 72(csp)                     # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB4_2
+ 	j	.LBB4_3
+ .Lfunc_end4:
+@@ -664,93 +675,96 @@
+ _ZL16complex_dispatchPiii:              # @_ZL16complex_dispatchPiii
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -112
+-	.cfi_def_cfa_offset 112
+-	sd	ra, 104(sp)                     # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
+-	sd	a2, 80(sp)                      # 8-byte Folded Spill
++	cincoffset	csp, csp, -176
++	.cfi_def_cfa_offset 176
++	sc	cra, 160(csp)                   # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sc	ca0, 112(csp)                   # 16-byte Folded Spill
++	sd	a2, 136(csp)                    # 8-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 88(sp)                      # 8-byte Folded Spill
++	sd	a0, 144(csp)                    # 8-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 96(sp)                      # 8-byte Folded Spill
++	sd	a2, 152(csp)                    # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB5_4
+ 	j	.LBB5_1
+ .LBB5_1:                                # %for.body.lr.ph
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
++	ld	a0, 136(csp)                    # 8-byte Folded Reload
+ 	andi	a0, a0, 1
+-.Lpcrel_hi4:
+-	auipc	a1, %pcrel_hi(_ZL2h1)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi4)
+-	sd	a1, 56(sp)                      # 8-byte Folded Spill
+-.Lpcrel_hi5:
+-	auipc	a1, %pcrel_hi(_ZL2h2)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi5)
+-	sd	a1, 64(sp)                      # 8-byte Folded Spill
++.LBB5_6:                                # %for.body.lr.ph
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL2h1)
++	lc	ca1, %pcrel_lo(.LBB5_6)(ca1)
++	sc	ca1, 80(csp)                    # 16-byte Folded Spill
++.LBB5_7:                                # %for.body.lr.ph
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL2h2)
++	lc	ca1, %pcrel_lo(.LBB5_7)(ca1)
++	sc	ca1, 96(csp)                    # 16-byte Folded Spill
+ 	beqz	a0, .LBB5_3
+ # %bb.2:                                # %for.body.lr.ph
+-	ld	a0, 56(sp)                      # 8-byte Folded Reload
+-	sd	a0, 64(sp)                      # 8-byte Folded Spill
++	lc	ca0, 80(csp)                    # 16-byte Folded Reload
++	sc	ca0, 96(csp)                    # 16-byte Folded Spill
+ .LBB5_3:                                # %for.body.lr.ph
+-	ld	a0, 88(sp)                      # 8-byte Folded Reload
+-	ld	a1, 64(sp)                      # 8-byte Folded Reload
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
++	ld	a0, 144(csp)                    # 8-byte Folded Reload
++	lc	ca1, 96(csp)                    # 16-byte Folded Reload
++	sc	ca1, 32(csp)                    # 16-byte Folded Spill
+ 	slli	a0, a0, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
++	sd	a0, 56(csp)                     # 8-byte Folded Spill
+ 	li	a1, 0
+ 	mv	a0, a1
+-	sd	a1, 40(sp)                      # 8-byte Folded Spill
+-	sd	a0, 48(sp)                      # 8-byte Folded Spill
++	sd	a1, 64(csp)                     # 8-byte Folded Spill
++	sd	a0, 72(csp)                     # 8-byte Folded Spill
+ 	j	.LBB5_5
+ .LBB5_4:                                # %for.cond.cleanup
+-	ld	a0, 96(sp)                      # 8-byte Folded Reload
++	ld	a0, 152(csp)                    # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 104(sp)                     # 8-byte Folded Reload
+-	addi	sp, sp, 112
++	lc	cra, 160(csp)                   # 16-byte Folded Reload
++	cincoffset	csp, csp, 176
+ 	ret
+ .LBB5_5:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a3, 48(sp)                      # 8-byte Folded Reload
+-	ld	a2, 40(sp)                      # 8-byte Folded Reload
+-	ld	a0, 24(sp)                      # 8-byte Folded Reload
+-	ld	a1, 72(sp)                      # 8-byte Folded Reload
+-	sd	a3, 8(sp)                       # 8-byte Folded Spill
+-	sd	a2, 16(sp)                      # 8-byte Folded Spill
++	ld	a3, 72(csp)                     # 8-byte Folded Reload
++	ld	a2, 64(csp)                     # 8-byte Folded Reload
++	lc	ca0, 32(csp)                    # 16-byte Folded Reload
++	lc	ca1, 112(csp)                   # 16-byte Folded Reload
++	sd	a3, 16(csp)                     # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	slli	a2, a2, 2
+-	add	a1, a1, a2
+-	lw	a1, 0(a1)
+-	ld	a2, 0(a0)
+-	ld	a2, 0(a2)
+-	jalr	a2
+-	srli	a1, a0, 1
+-	andi	a2, a1, 56
+-.Lpcrel_hi6:
+-	auipc	a1, %pcrel_hi(_ZL14function_table)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi6)
+-	add	a1, a1, a2
+-	ld	a1, 0(a1)
+-	jalr	a1
++	cincoffset	ca1, ca1, a2
++	lw	a1, 0(ca1)
++	lc	ca2, 0(ca0)
++	lc	ca2, 0(ca2)
++	jalr	ca2
++	andi	a2, a0, 112
++.LBB5_8:                                # %for.body
++                                        #   in Loop: Header=BB5_5 Depth=1
++                                        # Label of block must be emitted
++	auipcc	ca1, %got_pcrel_hi(_ZL14function_table)
++	lc	ca1, %pcrel_lo(.LBB5_8)(ca1)
++	cincoffset	ca1, ca1, a2
++	lc	ca1, 0(ca1)
++	jalr	ca1
+ 	mv	a1, a0
+ 	slli	a0, a1, 57
+ 	srli	a0, a0, 59
+-	call	_ZL16dispatch_by_typeii
+-	sd	a0, 0(sp)                       # 8-byte Folded Spill
+-	call	_ZL14classify_rangei
+-	ld	a4, 0(sp)                       # 8-byte Folded Reload
+-	ld	a3, 8(sp)                       # 8-byte Folded Reload
+-	ld	a1, 32(sp)                      # 8-byte Folded Reload
++	ccall	_ZL16dispatch_by_typeii
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
++	ccall	_ZL14classify_rangei
++	ld	a4, 8(csp)                      # 8-byte Folded Reload
++	ld	a3, 16(csp)                     # 8-byte Folded Reload
++	ld	a1, 56(csp)                     # 8-byte Folded Reload
+ 	mv	a2, a0
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 24(csp)                     # 8-byte Folded Reload
+ 	addw	a2, a2, a4
+ 	xor	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 96(sp)                      # 8-byte Folded Spill
++	sd	a3, 152(csp)                    # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 40(sp)                      # 8-byte Folded Spill
+-	sd	a2, 48(sp)                      # 8-byte Folded Spill
++	sd	a3, 64(csp)                     # 8-byte Folded Spill
++	sd	a2, 72(csp)                     # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB5_4
+ 	j	.LBB5_5
+ .Lfunc_end5:
+@@ -760,183 +774,192 @@
+ 	.p2align	1                               # -- Begin function _ZL16dispatch_by_typeii
+ 	.type	_ZL16dispatch_by_typeii,@function
+ _ZL16dispatch_by_typeii:                # @_ZL16dispatch_by_typeii
+-	.cfi_startproc
+-# %bb.0:                                # %entry
+-	addi	sp, sp, -32
+-	.cfi_def_cfa_offset 32
+-	sd	a1, 0(sp)                       # 8-byte Folded Spill
+-	mv	a1, a0
+-	ld	a0, 0(sp)                       # 8-byte Folded Reload
++.L_ZL16dispatch_by_typeii$jump_table_base:
++	.cfi_startproc
++# %bb.0:                                # %entry
++	cincoffset	csp, csp, -48
++	.cfi_def_cfa_offset 48
++	sc	cra, 32(csp)                    # 16-byte Folded Spill
++	.cfi_offset ra, -16
++	sd	a1, 0(csp)                      # 8-byte Folded Spill
++	mv	a1, a0
++	ld	a0, 0(csp)                      # 8-byte Folded Reload
+ 	li	a2, 0
+-	sd	a0, 8(sp)                       # 8-byte Folded Spill
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
+                                         # kill: def $x10 killed $x11
+ 	slli	a0, a1, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 16(sp)                      # 8-byte Folded Spill
++	sd	a0, 16(csp)                     # 8-byte Folded Spill
+ 	li	a0, 30
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	bltu	a0, a1, .LBB6_33
+ # %bb.1:                                # %entry
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
+-	slli	a0, a0, 3
+-.Lpcrel_hi7:
+-	auipc	a1, %pcrel_hi(.LJTI6_0)
+-	addi	a1, a1, %pcrel_lo(.Lpcrel_hi7)
+-	add	a0, a0, a1
+-	ld	a0, 0(a0)
+-	jr	a0
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
++	slli	a1, a0, 2
++.LBB6_34:                               # %entry
++                                        # Label of block must be emitted
++	auipcc	ca0, %pcrel_hi(.LJTI6_0)
++	cincoffset	ca0, ca0, %pcrel_lo(.LBB6_34)
++	cincoffset	ca0, ca0, a1
++	lw	a1, 0(ca0)
++.LBB6_35:                               # %entry
++                                        # Label of block must be emitted
++	auipcc	ca0, %pcrel_hi(.L_ZL16dispatch_by_typeii$jump_table_base)
++	cincoffset	ca0, ca0, %pcrel_lo(.LBB6_35)
++	cincoffset	ca0, ca0, a1
++	jr	ca0
+ .LBB6_2:                                # %sw.bb
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_3:                                # %sw.bb1
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 2
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_4:                                # %sw.bb3
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 3
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_5:                                # %sw.bb5
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 4
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_6:                                # %sw.bb7
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 5
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_7:                                # %sw.bb9
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 6
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_8:                                # %sw.bb11
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 7
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_9:                                # %sw.bb13
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 8
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_10:                               # %sw.bb15
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	slliw	a0, a0, 1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_11:                               # %sw.bb16
+-	ld	a1, 8(sp)                       # 8-byte Folded Reload
+-	slliw	a0, a1, 1
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
++	slli	a0, a1, 1
+ 	addw	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_12:                               # %sw.bb18
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	slliw	a0, a0, 2
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_13:                               # %sw.bb20
+-	ld	a1, 8(sp)                       # 8-byte Folded Reload
+-	slliw	a0, a1, 2
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
++	slli	a0, a1, 2
+ 	addw	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_14:                               # %sw.bb22
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	xori	a0, a0, 17
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_15:                               # %sw.bb23
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	xori	a0, a0, 34
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_16:                               # %sw.bb25
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	xori	a0, a0, 51
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_17:                               # %sw.bb27
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	xori	a0, a0, 68
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_18:                               # %sw.bb29
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	andi	a0, a0, 255
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_19:                               # %sw.bb30
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	slli	a0, a0, 48
+ 	srli	a0, a0, 48
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_20:                               # %sw.bb32
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	ori	a0, a0, 256
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_21:                               # %sw.bb33
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	ori	a0, a0, 512
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_22:                               # %sw.bb35
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	slliw	a0, a0, 1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_23:                               # %sw.bb36
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	slliw	a0, a0, 2
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_24:                               # %sw.bb38
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	sraiw	a0, a0, 1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_25:                               # %sw.bb39
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	sraiw	a0, a0, 2
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_26:                               # %sw.bb41
+-	ld	a1, 8(sp)                       # 8-byte Folded Reload
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
+ 	li	a0, 0
+ 	subw	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_27:                               # %sw.bb42
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	not	a0, a0
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_28:                               # %sw.bb43
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, 100
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_29:                               # %sw.bb45
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	addiw	a0, a0, -100
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_30:                               # %sw.bb47
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	li	a1, 10
+ 	mulw	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_31:                               # %sw.bb49
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	lui	a1, 419430
+ 	addiw	a1, a1, 1639
+@@ -944,64 +967,65 @@
+ 	srli	a1, a0, 63
+ 	srai	a0, a0, 34
+ 	add	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_32:                               # %sw.bb50
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
+ 	sext.w	a1, a0
+ 	lui	a2, 419430
+ 	addiw	a2, a2, 1639
+ 	mul	a1, a1, a2
+ 	srli	a2, a1, 63
+ 	srai	a1, a1, 34
+-	addw	a1, a1, a2
++	add	a1, a1, a2
+ 	li	a2, 10
+-	mulw	a1, a1, a2
++	mul	a1, a1, a2
+ 	subw	a0, a0, a1
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB6_33
+ .LBB6_33:                               # %return
+-	ld	a0, 24(sp)                      # 8-byte Folded Reload
++	ld	a0, 24(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	addi	sp, sp, 32
++	lc	cra, 32(csp)                    # 16-byte Folded Reload
++	cincoffset	csp, csp, 48
+ 	ret
+ .Lfunc_end6:
+ 	.size	_ZL16dispatch_by_typeii, .Lfunc_end6-_ZL16dispatch_by_typeii
+ 	.cfi_endproc
+ 	.section	.rodata,"a",@progbits
+-	.p2align	3, 0x0
++	.p2align	2, 0x0
+ .LJTI6_0:
+-	.quad	.LBB6_2
+-	.quad	.LBB6_3
+-	.quad	.LBB6_4
+-	.quad	.LBB6_5
+-	.quad	.LBB6_6
+-	.quad	.LBB6_7
+-	.quad	.LBB6_8
+-	.quad	.LBB6_9
+-	.quad	.LBB6_10
+-	.quad	.LBB6_11
+-	.quad	.LBB6_12
+-	.quad	.LBB6_13
+-	.quad	.LBB6_14
+-	.quad	.LBB6_15
+-	.quad	.LBB6_16
+-	.quad	.LBB6_17
+-	.quad	.LBB6_18
+-	.quad	.LBB6_19
+-	.quad	.LBB6_20
+-	.quad	.LBB6_21
+-	.quad	.LBB6_22
+-	.quad	.LBB6_23
+-	.quad	.LBB6_24
+-	.quad	.LBB6_25
+-	.quad	.LBB6_26
+-	.quad	.LBB6_27
+-	.quad	.LBB6_28
+-	.quad	.LBB6_29
+-	.quad	.LBB6_30
+-	.quad	.LBB6_31
+-	.quad	.LBB6_32
++	.word	.LBB6_2-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_3-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_4-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_5-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_6-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_7-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_8-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_9-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_10-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_11-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_12-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_13-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_14-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_15-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_16-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_17-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_18-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_19-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_20-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_21-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_22-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_23-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_24-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_25-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_26-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_27-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_28-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_29-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_30-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_31-.L_ZL16dispatch_by_typeii$jump_table_base
++	.word	.LBB6_32-.L_ZL16dispatch_by_typeii$jump_table_base
+ .L.LJTI6_0_end0:
+ 	.size	.LJTI6_0, .L.LJTI6_0_end0-.LJTI6_0
+                                         # -- End function
+@@ -1028,7 +1052,7 @@
+ _ZN8Handler1D0Ev:                       # @_ZN8Handler1D0Ev
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	tail	_ZdlPv@plt
++	ctail	_ZdlPv
+ .Lfunc_end8:
+ 	.size	_ZN8Handler1D0Ev, .Lfunc_end8-_ZN8Handler1D0Ev
+ 	.cfi_endproc
+@@ -1056,7 +1080,7 @@
+ _ZN8Handler2D0Ev:                       # @_ZN8Handler2D0Ev
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	tail	_ZdlPv@plt
++	ctail	_ZdlPv
+ .Lfunc_end10:
+ 	.size	_ZN8Handler2D0Ev, .Lfunc_end10-_ZN8Handler2D0Ev
+ 	.cfi_endproc
+@@ -1084,7 +1108,7 @@
+ _ZN8Handler3D0Ev:                       # @_ZN8Handler3D0Ev
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	tail	_ZdlPv@plt
++	ctail	_ZdlPv
+ .Lfunc_end12:
+ 	.size	_ZN8Handler3D0Ev, .Lfunc_end12-_ZN8Handler3D0Ev
+ 	.cfi_endproc
+@@ -1095,81 +1119,81 @@
+ _ZL14classify_rangei:                   # @_ZL14classify_rangei
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -32
++	cincoffset	csp, csp, -32
+ 	.cfi_def_cfa_offset 32
+ 	mv	a1, a0
+-	sd	a1, 16(sp)                      # 8-byte Folded Spill
++	sd	a1, 16(csp)                     # 8-byte Folded Spill
+ 	li	a2, -10
+ 	li	a1, -1000
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	blt	a0, a1, .LBB13_10
+ 	j	.LBB13_1
+ .LBB13_1:                               # %if.end
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a2, -5
+ 	li	a1, -500
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	blt	a0, a1, .LBB13_10
+ 	j	.LBB13_2
+ .LBB13_2:                               # %if.end3
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a2, -2
+ 	li	a1, -100
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	blt	a0, a1, .LBB13_10
+ 	j	.LBB13_3
+ .LBB13_3:                               # %if.end6
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a1, -1
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
++	sd	a1, 24(csp)                     # 8-byte Folded Spill
+ 	bltz	a0, .LBB13_10
+ 	j	.LBB13_4
+ .LBB13_4:                               # %if.end9
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a1, 0
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
++	sd	a1, 24(csp)                     # 8-byte Folded Spill
+ 	beqz	a0, .LBB13_10
+ 	j	.LBB13_5
+ .LBB13_5:                               # %if.end12
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a2, 1
+ 	li	a1, 100
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	bltu	a0, a1, .LBB13_10
+ 	j	.LBB13_6
+ .LBB13_6:                               # %if.end15
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a2, 2
+ 	li	a1, 500
+-	sd	a2, 24(sp)                      # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	bltu	a0, a1, .LBB13_10
+ 	j	.LBB13_7
+ .LBB13_7:                               # %if.end18
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+ 	li	a1, 10
+-	sd	a1, 0(sp)                       # 8-byte Folded Spill
++	sd	a1, 0(csp)                      # 8-byte Folded Spill
+ 	li	a2, 5
+ 	li	a1, 1000
+-	sd	a2, 8(sp)                       # 8-byte Folded Spill
++	sd	a2, 8(csp)                      # 8-byte Folded Spill
+ 	bltu	a0, a1, .LBB13_9
+ # %bb.8:                                # %if.end18
+-	ld	a0, 0(sp)                       # 8-byte Folded Reload
+-	sd	a0, 8(sp)                       # 8-byte Folded Spill
++	ld	a0, 0(csp)                      # 8-byte Folded Reload
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
+ .LBB13_9:                               # %if.end18
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
+-	sd	a0, 24(sp)                      # 8-byte Folded Spill
++	ld	a0, 8(csp)                      # 8-byte Folded Reload
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB13_10
+ .LBB13_10:                              # %return
+-	ld	a0, 24(sp)                      # 8-byte Folded Reload
++	ld	a0, 24(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	addi	sp, sp, 32
++	cincoffset	csp, csp, 32
+ 	ret
+ .Lfunc_end13:
+ 	.size	_ZL14classify_rangei, .Lfunc_end13-_ZL14classify_rangei
+@@ -1206,7 +1230,7 @@
+ # %bb.0:                                # %entry
+ 	mv	a1, a0
+                                         # kill: def $x10 killed $x11
+-	slliw	a0, a1, 1
++	slli	a0, a1, 1
+ 	addw	a0, a0, a1
+ 	ret
+ .Lfunc_end16:
+@@ -1220,7 +1244,7 @@
+ # %bb.0:                                # %entry
+                                         # kill: def $x11 killed $x10
+ 	srliw	a1, a0, 31
+-	addw	a0, a0, a1
++	add	a0, a0, a1
+ 	sraiw	a0, a0, 1
+ 	ret
+ .Lfunc_end17:
+@@ -1275,38 +1299,79 @@
+ 	.size	_ZL11process_shli, .Lfunc_end21-_ZL11process_shli
+ 	.cfi_endproc
+                                         # -- End function
++	.hidden	_ZTV8Handler1                   # @_ZTV8Handler1
++	.type	_ZTV8Handler1,@object
++	.section	.data.rel.ro._ZTV8Handler1,"aGw",@progbits,_ZTV8Handler1,comdat
++	.weak	_ZTV8Handler1
++	.p2align	4, 0x0
++_ZTV8Handler1:
++	.chericap	0
++	.chericap	_ZTI8Handler1
++	.chericap	_ZN8Handler16handleEi
++	.chericap	_ZN8IHandlerD2Ev
++	.chericap	_ZN8Handler1D0Ev
++	.size	_ZTV8Handler1, 80
++
+ 	.type	_ZL2h1,@object                  # @_ZL2h1
+ 	.data
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZL2h1:
+-	.quad	_ZTV8Handler1+16
+-	.size	_ZL2h1, 8
++	.chericap	_ZTV8Handler1+32
++	.size	_ZL2h1, 16
++
++	.hidden	_ZTV8Handler2                   # @_ZTV8Handler2
++	.type	_ZTV8Handler2,@object
++	.section	.data.rel.ro._ZTV8Handler2,"aGw",@progbits,_ZTV8Handler2,comdat
++	.weak	_ZTV8Handler2
++	.p2align	4, 0x0
++_ZTV8Handler2:
++	.chericap	0
++	.chericap	_ZTI8Handler2
++	.chericap	_ZN8Handler26handleEi
++	.chericap	_ZN8IHandlerD2Ev
++	.chericap	_ZN8Handler2D0Ev
++	.size	_ZTV8Handler2, 80
+ 
+ 	.type	_ZL2h2,@object                  # @_ZL2h2
+-	.p2align	3, 0x0
++	.data
++	.p2align	4, 0x0
+ _ZL2h2:
+-	.quad	_ZTV8Handler2+16
+-	.size	_ZL2h2, 8
++	.chericap	_ZTV8Handler2+32
++	.size	_ZL2h2, 16
++
++	.hidden	_ZTV8Handler3                   # @_ZTV8Handler3
++	.type	_ZTV8Handler3,@object
++	.section	.data.rel.ro._ZTV8Handler3,"aGw",@progbits,_ZTV8Handler3,comdat
++	.weak	_ZTV8Handler3
++	.p2align	4, 0x0
++_ZTV8Handler3:
++	.chericap	0
++	.chericap	_ZTI8Handler3
++	.chericap	_ZN8Handler36handleEi
++	.chericap	_ZN8IHandlerD2Ev
++	.chericap	_ZN8Handler3D0Ev
++	.size	_ZTV8Handler3, 80
+ 
+ 	.type	_ZL2h3,@object                  # @_ZL2h3
+-	.p2align	3, 0x0
++	.data
++	.p2align	4, 0x0
+ _ZL2h3:
+-	.quad	_ZTV8Handler3+16
+-	.size	_ZL2h3, 8
++	.chericap	_ZTV8Handler3+32
++	.size	_ZL2h3, 16
+ 
+ 	.type	_ZL14function_table,@object     # @_ZL14function_table
+-	.section	.rodata,"a",@progbits
+-	.p2align	3, 0x0
++	.section	.data.rel.ro,"aw",@progbits
++	.p2align	4, 0x0
+ _ZL14function_table:
+-	.quad	_ZL11process_addi
+-	.quad	_ZL11process_subi
+-	.quad	_ZL11process_muli
+-	.quad	_ZL11process_divi
+-	.quad	_ZL11process_xori
+-	.quad	_ZL11process_andi
+-	.quad	_ZL10process_ori
+-	.quad	_ZL11process_shli
+-	.size	_ZL14function_table, 64
++	.chericap	_ZL11process_addi
++	.chericap	_ZL11process_subi
++	.chericap	_ZL11process_muli
++	.chericap	_ZL11process_divi
++	.chericap	_ZL11process_xori
++	.chericap	_ZL11process_andi
++	.chericap	_ZL10process_ori
++	.chericap	_ZL11process_shli
++	.size	_ZL14function_table, 128
+ 
+ 	.hidden	_ZTS8Handler1                   # @_ZTS8Handler1
+ 	.type	_ZTS8Handler1,@object
+@@ -1326,24 +1391,24 @@
+ 
+ 	.hidden	_ZTI8IHandler                   # @_ZTI8IHandler
+ 	.type	_ZTI8IHandler,@object
+-	.section	.rodata._ZTI8IHandler,"aG",@progbits,_ZTI8IHandler,comdat
++	.section	.data.rel.ro._ZTI8IHandler,"aGw",@progbits,_ZTI8IHandler,comdat
+ 	.weak	_ZTI8IHandler
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI8IHandler:
+-	.quad	_ZTVN10__cxxabiv117__class_type_infoE+16
+-	.quad	_ZTS8IHandler
+-	.size	_ZTI8IHandler, 16
++	.chericap	_ZTVN10__cxxabiv117__class_type_infoE+32
++	.chericap	_ZTS8IHandler
++	.size	_ZTI8IHandler, 32
+ 
+ 	.hidden	_ZTI8Handler1                   # @_ZTI8Handler1
+ 	.type	_ZTI8Handler1,@object
+-	.section	.rodata._ZTI8Handler1,"aG",@progbits,_ZTI8Handler1,comdat
++	.section	.data.rel.ro._ZTI8Handler1,"aGw",@progbits,_ZTI8Handler1,comdat
+ 	.weak	_ZTI8Handler1
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI8Handler1:
+-	.quad	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+-	.quad	_ZTS8Handler1
+-	.quad	_ZTI8IHandler
+-	.size	_ZTI8Handler1, 24
++	.chericap	_ZTVN10__cxxabiv120__si_class_type_infoE+32
++	.chericap	_ZTS8Handler1
++	.chericap	_ZTI8IHandler
++	.size	_ZTI8Handler1, 48
+ 
+ 	.hidden	_ZTS8Handler2                   # @_ZTS8Handler2
+ 	.type	_ZTS8Handler2,@object
+@@ -1355,14 +1420,14 @@
+ 
+ 	.hidden	_ZTI8Handler2                   # @_ZTI8Handler2
+ 	.type	_ZTI8Handler2,@object
+-	.section	.rodata._ZTI8Handler2,"aG",@progbits,_ZTI8Handler2,comdat
++	.section	.data.rel.ro._ZTI8Handler2,"aGw",@progbits,_ZTI8Handler2,comdat
+ 	.weak	_ZTI8Handler2
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI8Handler2:
+-	.quad	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+-	.quad	_ZTS8Handler2
+-	.quad	_ZTI8IHandler
+-	.size	_ZTI8Handler2, 24
++	.chericap	_ZTVN10__cxxabiv120__si_class_type_infoE+32
++	.chericap	_ZTS8Handler2
++	.chericap	_ZTI8IHandler
++	.size	_ZTI8Handler2, 48
+ 
+ 	.hidden	_ZTS8Handler3                   # @_ZTS8Handler3
+ 	.type	_ZTS8Handler3,@object
+@@ -1374,62 +1439,24 @@
+ 
+ 	.hidden	_ZTI8Handler3                   # @_ZTI8Handler3
+ 	.type	_ZTI8Handler3,@object
+-	.section	.rodata._ZTI8Handler3,"aG",@progbits,_ZTI8Handler3,comdat
++	.section	.data.rel.ro._ZTI8Handler3,"aGw",@progbits,_ZTI8Handler3,comdat
+ 	.weak	_ZTI8Handler3
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI8Handler3:
+-	.quad	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+-	.quad	_ZTS8Handler3
+-	.quad	_ZTI8IHandler
+-	.size	_ZTI8Handler3, 24
++	.chericap	_ZTVN10__cxxabiv120__si_class_type_infoE+32
++	.chericap	_ZTS8Handler3
++	.chericap	_ZTI8IHandler
++	.size	_ZTI8Handler3, 48
+ 
+ 	.type	.L__const._ZL21process_virtual_batchPiii.handlers,@object # @__const._ZL21process_virtual_batchPiii.handlers
+-	.section	.rodata,"a",@progbits
+-	.p2align	3, 0x0
++	.section	.data.rel.ro,"aw",@progbits
++	.p2align	4, 0x0
+ .L__const._ZL21process_virtual_batchPiii.handlers:
+-	.quad	_ZL2h1
+-	.quad	_ZL2h2
+-	.quad	_ZL2h3
+-	.size	.L__const._ZL21process_virtual_batchPiii.handlers, 24
+-
+-	.type	.L__unnamed_1,@object           # @0
+-	.p2align	3, 0x0
+-.L__unnamed_1:
+-	.quad	0
+-	.quad	_ZTI8Handler1
+-	.quad	_ZN8Handler16handleEi
+-	.quad	_ZN8IHandlerD2Ev
+-	.quad	_ZN8Handler1D0Ev
+-	.zero	24
+-	.quad	0
+-	.quad	_ZTI8Handler2
+-	.quad	_ZN8Handler26handleEi
+-	.quad	_ZN8IHandlerD2Ev
+-	.quad	_ZN8Handler2D0Ev
+-	.zero	24
+-	.quad	0
+-	.quad	_ZTI8Handler3
+-	.quad	_ZN8Handler36handleEi
+-	.quad	_ZN8IHandlerD2Ev
+-	.quad	_ZN8Handler3D0Ev
+-	.size	.L__unnamed_1, 168
+-
+-	.type	.L__unnamed_2,@object           # @1
+-.L__unnamed_2:
+-	.size	.L__unnamed_2, 0
+-
+-	.weak	_ZTV8Handler1
+-	.hidden	_ZTV8Handler1
+-.set _ZTV8Handler1, .L__unnamed_1
+-	.size	_ZTV8Handler1, 40
+-	.weak	_ZTV8Handler2
+-	.hidden	_ZTV8Handler2
+-.set _ZTV8Handler2, .L__unnamed_1+64
+-	.size	_ZTV8Handler2, 40
+-	.weak	_ZTV8Handler3
+-	.hidden	_ZTV8Handler3
+-.set _ZTV8Handler3, .L__unnamed_1+128
+-	.size	_ZTV8Handler3, 40
++	.chericap	_ZL2h1
++	.chericap	_ZL2h2
++	.chericap	_ZL2h3
++	.size	.L__const._ZL21process_virtual_batchPiii.handlers, 48
++
+ 	.ident	"clang version 17.0.0 (https://github.com/CTSRD-CHERI/llvm-project.git 9e82d2969a6213554f973e64fb5a5895db59e024)"
+ 	.section	".note.GNU-stack","",@progbits
+ 	.addrsig
+@@ -1454,7 +1481,3 @@
+ 	.addrsig_sym _ZTI8Handler2
+ 	.addrsig_sym _ZTS8Handler3
+ 	.addrsig_sym _ZTI8Handler3
+-	.addrsig_sym .L__unnamed_1
+-	.addrsig_sym _ZTV8Handler1
+-	.addrsig_sym _ZTV8Handler2
+-	.addrsig_sym _ZTV8Handler3

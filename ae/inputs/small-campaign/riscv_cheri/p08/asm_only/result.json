@@ -1,0 +1,42 @@
+{
+  "arch": "riscv_cheri",
+  "bench": "p08",
+  "c_bnd_delta": 0,
+  "c_perm_delta": 0,
+  "compile_time_s": 1665.879479,
+  "extra": {
+    "metric": "icount",
+    "retired_instructions": 560204876.0,
+    "pre_gate_retired_instructions": 568084010.0
+  },
+  "icount": 560204876.0,
+  "icount_samples": [
+    352608498,
+    564594924,
+    518027940,
+    589377298,
+    605384432,
+    514788866,
+    595952470,
+    518699372,
+    578004526,
+    571573096
+  ],
+  "instr_count": 560204876,
+  "metric": "icount",
+  "n_runs": 10,
+  "pipeline": "asm_only",
+  "prune_enabled": true,
+  "runtime_samples": [],
+  "tag_ops_delta": 0,
+  "validation_gate": {
+    "metric": "icount",
+    "baseline_value": 560204876.0,
+    "optimized_value": 560204876.0,
+    "min_improvement": 0.005,
+    "decision": "retained_original",
+    "clamped": true
+  },
+  "pre_gate_icount": 568084010.0,
+  "pre_gate_instr_count": 568084010
+}

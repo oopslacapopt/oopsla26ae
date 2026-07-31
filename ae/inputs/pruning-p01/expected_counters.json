@@ -1,0 +1,28 @@
+{
+  "provenance": {
+    "captured": "2026-08-02",
+    "note": "Frozen expected counters for the deterministic p01 assembly-search rerun, captured from the current CapOpt core (concrete-input screening stage enabled, assembler gate before the solver, disjoint fresh/cached verdict counters). The lane re-runs the search on the two shipped p01 translation units and must reproduce these counters exactly."
+  },
+  "expected": {
+    "kernel": "p01",
+    "enumerated": 1537,
+    "generated_by_generators": 234,
+    "generated_by_explorer": 1303,
+    "emitted_after_dedup": 1303,
+    "candidates_considered": 1303,
+    "smt_queried": 61,
+    "cached_verdicts": 153,
+    "reached_verification": 214,
+    "filtered_before_smt_pct": 86.1,
+    "smt_proven": 3,
+    "smt_refuted": 58,
+    "abstained_unchecked": 306,
+    "quick_ce_rejects": 0,
+    "assembler_rejects": 0,
+    "solver_unavailable": 0,
+    "dropped_provenance_prune": 0,
+    "dropped_stratum_gate": 0,
+    "dropped_stratum_cap": 0,
+    "applied_assembly_rewrites": 8
+  }
+}

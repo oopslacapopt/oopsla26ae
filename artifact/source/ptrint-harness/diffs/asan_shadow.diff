@@ -1,0 +1,143 @@
+--- asan_shadow-baseline
++++ asan_shadow-cheri
+@@ -1,6 +1,6 @@
+ 	.text
+ 	.attribute	4, 16
+-	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0"
++	.attribute	5, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_xcheri0p0"
+ 	.file	"asan_shadow.c"
+ 	.globl	asan_shadow_sum                 # -- Begin function asan_shadow_sum
+ 	.p2align	1
+@@ -8,111 +8,53 @@
+ asan_shadow_sum:                        # @asan_shadow_sum
+ 	.cfi_startproc
+ # %bb.0:                                # %entry
+-	addi	sp, sp, -96
+-	.cfi_def_cfa_offset 96
+-	sd	ra, 88(sp)                      # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	sd	a0, 64(sp)                      # 8-byte Folded Spill
++	cincoffset	csp, csp, -64
++	.cfi_def_cfa_offset 64
++	sc	ca0, 32(csp)                    # 16-byte Folded Spill
+ 	mv	a0, a1
+-	sd	a0, 72(sp)                      # 8-byte Folded Spill
++	sd	a0, 48(csp)                     # 8-byte Folded Spill
+ 	li	a0, 0
+ 	mv	a2, a0
+-	sd	a2, 80(sp)                      # 8-byte Folded Spill
++	sd	a2, 56(csp)                     # 8-byte Folded Spill
+ 	bge	a0, a1, .LBB0_2
+ 	j	.LBB0_1
+ .LBB0_1:                                # %for.body.preheader
+-	ld	a0, 72(sp)                      # 8-byte Folded Reload
++	ld	a0, 48(csp)                     # 8-byte Folded Reload
+ 	slli	a0, a0, 32
+ 	srli	a0, a0, 32
+-	sd	a0, 40(sp)                      # 8-byte Folded Spill
++	sd	a0, 8(csp)                      # 8-byte Folded Spill
+ 	li	a1, 0
+ 	mv	a0, a1
+-	sd	a1, 48(sp)                      # 8-byte Folded Spill
+-	sd	a0, 56(sp)                      # 8-byte Folded Spill
++	sd	a1, 16(csp)                     # 8-byte Folded Spill
++	sd	a0, 24(csp)                     # 8-byte Folded Spill
+ 	j	.LBB0_3
+ .LBB0_2:                                # %for.cond.cleanup
+-	ld	a0, 80(sp)                      # 8-byte Folded Reload
++	ld	a0, 56(csp)                     # 8-byte Folded Reload
+ 	sext.w	a0, a0
+-	ld	ra, 88(sp)                      # 8-byte Folded Reload
+-	addi	sp, sp, 96
++	cincoffset	csp, csp, 64
+ 	ret
+ .LBB0_3:                                # %for.body
+                                         # =>This Inner Loop Header: Depth=1
+-	ld	a0, 64(sp)                      # 8-byte Folded Reload
+-	ld	a1, 48(sp)                      # 8-byte Folded Reload
+-	ld	a2, 56(sp)                      # 8-byte Folded Reload
+-	sd	a2, 0(sp)                       # 8-byte Folded Spill
+-	sd	a1, 8(sp)                       # 8-byte Folded Spill
+-	slli	a1, a1, 2
+-	add	a0, a0, a1
+-	sd	a0, 16(sp)                      # 8-byte Folded Spill
+-	mv	a1, a0
+-	sd	a1, 24(sp)                      # 8-byte Folded Spill
+-	srli	a0, a0, 3
+-	li	a1, 1
+-	slli	a1, a1, 46
+-	add	a0, a0, a1
+-	lb	a0, 0(a0)
+-	sd	a0, 32(sp)                      # 8-byte Folded Spill
+-	beqz	a0, .LBB0_6
+-	j	.LBB0_4
+-.LBB0_4:                                #   in Loop: Header=BB0_3 Depth=1
+-	ld	a1, 32(sp)                      # 8-byte Folded Reload
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
+-	andi	a0, a0, 7
+-	addi	a0, a0, 3
+-	slli	a1, a1, 56
+-	srai	a1, a1, 56
+-	blt	a0, a1, .LBB0_6
+-	j	.LBB0_5
+-.LBB0_5:
+-	ld	a0, 16(sp)                      # 8-byte Folded Reload
+-	call	__asan_report_load4@plt
+-.LBB0_6:                                #   in Loop: Header=BB0_3 Depth=1
+-	ld	a1, 40(sp)                      # 8-byte Folded Reload
+-	ld	a0, 8(sp)                       # 8-byte Folded Reload
+-	ld	a3, 0(sp)                       # 8-byte Folded Reload
+-	ld	a2, 24(sp)                      # 8-byte Folded Reload
+-	lw	a2, 0(a2)
++	ld	a1, 8(csp)                      # 8-byte Folded Reload
++	ld	a3, 24(csp)                     # 8-byte Folded Reload
++	ld	a0, 16(csp)                     # 8-byte Folded Reload
++	lc	ca2, 32(csp)                    # 16-byte Folded Reload
++	slli	a4, a0, 2
++	cincoffset	ca2, ca2, a4
++	lw	a2, 0(ca2)
+ 	addw	a2, a2, a3
+ 	addi	a0, a0, 1
+ 	mv	a3, a2
+-	sd	a3, 80(sp)                      # 8-byte Folded Spill
++	sd	a3, 56(csp)                     # 8-byte Folded Spill
+ 	mv	a3, a0
+-	sd	a3, 48(sp)                      # 8-byte Folded Spill
+-	sd	a2, 56(sp)                      # 8-byte Folded Spill
++	sd	a3, 16(csp)                     # 8-byte Folded Spill
++	sd	a2, 24(csp)                     # 8-byte Folded Spill
+ 	beq	a0, a1, .LBB0_2
+ 	j	.LBB0_3
+ .Lfunc_end0:
+ 	.size	asan_shadow_sum, .Lfunc_end0-asan_shadow_sum
+ 	.cfi_endproc
+                                         # -- End function
+-	.section	.text.asan.module_ctor,"axGR",@progbits,asan.module_ctor,comdat
+-	.p2align	1                               # -- Begin function asan.module_ctor
+-	.type	asan.module_ctor,@function
+-asan.module_ctor:                       # @asan.module_ctor
+-	.cfi_startproc
+-# %bb.0:
+-	addi	sp, sp, -16
+-	.cfi_def_cfa_offset 16
+-	sd	ra, 8(sp)                       # 8-byte Folded Spill
+-	.cfi_offset ra, -8
+-	call	__asan_init@plt
+-	call	__asan_version_mismatch_check_v8@plt
+-	ld	ra, 8(sp)                       # 8-byte Folded Reload
+-	addi	sp, sp, 16
+-	ret
+-.Lfunc_end1:
+-	.size	asan.module_ctor, .Lfunc_end1-asan.module_ctor
+-	.cfi_endproc
+-                                        # -- End function
+-	.section	.init_array.1,"aGw",@init_array,asan.module_ctor,comdat
+-	.p2align	3
+-	.quad	asan.module_ctor
+ 	.ident	"clang version 17.0.0 (https://github.com/CTSRD-CHERI/llvm-project.git 9e82d2969a6213554f973e64fb5a5895db59e024)"
+ 	.section	".note.GNU-stack","",@progbits
+ 	.addrsig
+-	.addrsig_sym __asan_report_load4
+-	.addrsig_sym __asan_init
+-	.addrsig_sym asan.module_ctor
+-	.addrsig_sym __asan_version_mismatch_check_v8

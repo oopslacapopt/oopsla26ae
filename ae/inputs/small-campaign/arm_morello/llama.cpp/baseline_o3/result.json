@@ -1,0 +1,34 @@
+{
+  "arch": "arm_morello",
+  "bench": "llama.cpp",
+  "c_bnd_delta": null,
+  "c_perm_delta": null,
+  "compile_time_s": 3.103348,
+  "extra": {
+    "cycles": 12996549591.0,
+    "cycles_samples": [
+      12996549591.0,
+      13048898564.0,
+      12996472583.0,
+      12996505426.0,
+      13008456547.0
+    ],
+    "metric": "pmcstat"
+  },
+  "instr_count": 25225161504,
+  "n_runs": 5,
+  "pipeline": "baseline_o3",
+  "prune_enabled": true,
+  "runtime_s": 10.845109465997666,
+  "runtime_samples": [
+    10.862214721972123,
+    10.820411902968772,
+    10.922608750057407,
+    10.83581297006458,
+    10.845109465997666
+  ],
+  "schema_version": 1,
+  "smt_queries": null,
+  "smt_time_s": null,
+  "tag_ops_delta": null
+}

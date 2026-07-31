@@ -1,0 +1,393 @@
+{
+  "patterns": [
+    {
+      "name": "cgetaddr_add_csetaddr_to_cincoffset",
+      "stratum": "S1",
+      "level": "asm",
+      "source_pattern": "cgetaddr\\s+(?P<tmp>\\w+),\\s*(?P<src>\\w+)\\s*\\n\\s*add\\s+(?P=tmp),\\s*(?P=tmp),\\s*(?P<offset>\\w+)\\s*\\n\\s*csetaddr\\s+(?P<dst>\\w+),\\s*(?P=src),\\s*(?P=tmp)",
+      "replacement": "cincoffset {dst}, {src}, {offset}",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 2.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace CGetAddr+Add+CSetAddr with CIncOffset (S1)",
+        "witness": {
+          "before": [
+            "cgetaddr a0, ca1",
+            "add a0, a0, a2",
+            "csetaddr ca3, ca1, a0"
+          ],
+          "after": [
+            "cincoffset ca3, ca1, a2"
+          ],
+          "context": [
+            "cincoffset ca1, csp, 0",
+            "csetbounds ca1, ca1, 256",
+            "li a2, 8"
+          ],
+          "dead_registers": [
+            "a0"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: counterexample_for_ca3)",
+          "preconditions": {
+            "dead_registers": [
+              "a0"
+            ],
+            "context": [
+              "cincoffset ca1, csp, 0",
+              "csetbounds ca1, ca1, 256",
+              "li a2, 8"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "consecutive_cincoffset_fold",
+      "stratum": "S1",
+      "level": "asm",
+      "source_pattern": "cincoffset\\s+(?P<dst>\\w+),\\s*(?P<src>\\w+),\\s*(\\d+)\\s*\\n\\s*cincoffset\\s+(?P=dst),\\s*(?P=dst),\\s*(\\d+)",
+      "replacement": "cincoffset {dst}, {src}, {sum_offset}",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 1.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Fold consecutive cincoffset with constants into single (S1)",
+        "witness": {
+          "before": [
+            "cincoffset ca3, ca1, 16",
+            "cincoffset ca3, ca3, 32"
+          ],
+          "after": [
+            "cincoffset ca3, ca1, 48"
+          ],
+          "context": [
+            "cincoffset ca1, csp, 0",
+            "csetbounds ca1, ca1, 256"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: counterexample_for_ca3)",
+          "preconditions": {
+            "context": [
+              "cincoffset ca1, csp, 0",
+              "csetbounds ca1, ca1, 256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "csetbounds_to_csetboundsimm",
+      "stratum": "S1",
+      "level": "asm",
+      "source_pattern": "li\\s+(?P<tmp>\\w+),\\s*(?P<imm>\\d+)\\s*\\n\\s*csetbounds\\s+(?P<dst>\\w+),\\s*(?P<src>\\w+),\\s*(?P=tmp)",
+      "replacement": "csetboundsimm {dst}, {src}, {imm}",
+      "verification_status": "verified",
+      "cost_delta": {
+        "latency": 1.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace csetbounds with known constant by csetboundsimm (S1)",
+        "witness": {
+          "before": [
+            "li a0, 64",
+            "csetbounds ca1, ca2, a0"
+          ],
+          "after": [
+            "csetboundsimm ca1, ca2, 64"
+          ],
+          "dead_registers": [
+            "a0"
+          ]
+        },
+        "verification": {
+          "status": "verified",
+          "reason": "equivalent",
+          "preconditions": {
+            "dead_registers": [
+              "a0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "redundant_cmove_elimination",
+      "stratum": "S0",
+      "level": "asm",
+      "source_pattern": "cmove\\s+(\\w+),\\s*\\1\\b",
+      "replacement": "",
+      "verification_status": "verified",
+      "cost_delta": {
+        "latency": 1.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Eliminate redundant cmove (S0)",
+        "witness": {
+          "before": [
+            "cmove ca1, ca1"
+          ],
+          "after": []
+        },
+        "verification": {
+          "status": "verified",
+          "reason": "equivalent"
+        }
+      }
+    },
+    {
+      "name": "cincoffset_zero_to_cmove",
+      "stratum": "S0",
+      "level": "asm",
+      "source_pattern": "cincoffset\\s+(?P<dst>\\w+),\\s*(?P<src>\\w+),\\s*0\\b",
+      "replacement": "cmove {dst}, {src}",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 0.5,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace zero-offset cincoffset with cmove (S0)",
+        "witness": {
+          "before": [
+            "cincoffset ca3, ca1, 0"
+          ],
+          "after": [
+            "cmove ca3, ca1"
+          ],
+          "context": [
+            "cincoffset ca1, csp, 0",
+            "csetbounds ca1, ca1, 256"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: quick_counterexample)",
+          "preconditions": {
+            "context": [
+              "cincoffset ca1, csp, 0",
+              "csetbounds ca1, ca1, 256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "cgetaddr_csetaddr_identity_to_cmove",
+      "stratum": "S0",
+      "level": "asm",
+      "source_pattern": "cgetaddr\\s+(?P<tmp>\\w+),\\s*(?P<src>\\w+)\\s*\\n\\s*csetaddr\\s+(?P<dst>\\w+),\\s*(?P=src),\\s*(?P=tmp)",
+      "replacement": "cmove {dst}, {src}",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 1.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace cgetaddr+csetaddr identity with cmove (S0)",
+        "witness": {
+          "before": [
+            "cgetaddr a0, ca1",
+            "csetaddr ca2, ca1, a0"
+          ],
+          "after": [
+            "cmove ca2, ca1"
+          ],
+          "context": [
+            "cincoffset ca1, csp, 0",
+            "csetbounds ca1, ca1, 256"
+          ],
+          "dead_registers": [
+            "a0"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: quick_counterexample)",
+          "preconditions": {
+            "dead_registers": [
+              "a0"
+            ],
+            "context": [
+              "cincoffset ca1, csp, 0",
+              "csetbounds ca1, ca1, 256"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "cjalr_then_cmove_link_register",
+      "stratum": "S4",
+      "level": "asm",
+      "source_pattern": "cjalr\\s+(?P<link>\\w+),\\s*(?P<target>\\w+)\\s*\\n\\s*cmove\\s+(?P=link),\\s*(?P=link)\\b",
+      "replacement": "cjalr {link}, {target}",
+      "verification_status": "verified",
+      "cost_delta": {
+        "latency": 1.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Drop self-cmove of link register after cjalr (S4)",
+        "witness": {
+          "before": [
+            "cjalr ca1, ca2",
+            "cmove ca1, ca1"
+          ],
+          "after": [
+            "cjalr ca1, ca2"
+          ]
+        },
+        "verification": {
+          "status": "verified",
+          "reason": "equivalent"
+        }
+      }
+    },
+    {
+      "name": "ir_cap_addr_get_set_to_offset_inc",
+      "stratum": "S1",
+      "level": "ir",
+      "source_pattern": "(?P<addr>%[\\w.]+)\\s*=\\s*call\\s+(?P<ity>i\\d+)\\s+@llvm\\.cheri\\.cap\\.address\\.get\\((?P<capty>[^,)]+?)\\s+(?P<cap>%[\\w.]+)\\)\\s*\\n\\s*(?P<tmp>%[\\w.]+)\\s*=\\s*add\\s+(?P=ity)\\s+(?P=addr),\\s*(?P<delta>-?\\d+|%[\\w.]+)\\s*\\n\\s*(?P<dst>%[\\w.]+)\\s*=\\s*call\\s+(?P<rty>[^@]+?)\\s*@llvm\\.cheri\\.cap\\.address\\.set\\((?P=capty)\\s+(?P=cap),\\s*(?P=ity)\\s+(?P=tmp)\\)",
+      "replacement": "{dst} = call {rty} @llvm.cheri.cap.offset.increment({capty} {cap}, {ity} {delta})",
+      "verification_status": "conditional",
+      "cost_delta": {
+        "latency": 2.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace cap.address.get+add+cap.address.set with cap.offset.increment (S1)",
+        "witness": {
+          "before": [
+            "%addr = call i64 @llvm.cheri.cap.address.get(i8 addrspace(200)* %c)",
+            "%tmp = add i64 %addr, 16",
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.address.set(i8 addrspace(200)* %c, i64 %tmp)"
+          ],
+          "after": [
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.offset.increment(i8 addrspace(200)* %c, i64 16)"
+          ],
+          "context": [
+            "%c = call i8 addrspace(200)* @llvm.cheri.cap.bounds.set(i8 addrspace(200)* %cap, i64 256)"
+          ]
+        },
+        "verification": {
+          "status": "conditional",
+          "reason": "equivalent_under_context (unconditional: counterexample found)",
+          "preconditions": {
+            "context": [
+              "%c = call i8 addrspace(200)* @llvm.cheri.cap.bounds.set(i8 addrspace(200)* %cap, i64 256)"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "ir_cap_perms_get_and_set_to_perms_and",
+      "stratum": "S2",
+      "level": "ir",
+      "source_pattern": "(?P<perms>%[\\w.]+)\\s*=\\s*call\\s+(?P<ity>i\\d+)\\s+@llvm\\.cheri\\.cap\\.perms?\\.get\\((?P<capty>[^,)]+?)\\s+(?P<cap>%[\\w.]+)\\)\\s*\\n\\s*(?P<tmp>%[\\w.]+)\\s*=\\s*and\\s+(?P=ity)\\s+(?P=perms),\\s*(?P<mask>-?\\d+|%[\\w.]+)\\s*\\n\\s*(?P<dst>%[\\w.]+)\\s*=\\s*call\\s+(?P<rty>[^@]+?)\\s*@llvm\\.cheri\\.cap\\.perms?\\.set\\((?P=capty)\\s+(?P=cap),\\s*(?P=ity)\\s+(?P=tmp)\\)",
+      "replacement": "{dst} = call {rty} @llvm.cheri.cap.perms.and({capty} {cap}, {ity} {mask})",
+      "verification_status": "verified",
+      "cost_delta": {
+        "latency": 2.0,
+        "bounds": 0.0,
+        "permissions": 0.0,
+        "tag": 0.0
+      },
+      "metadata": {
+        "description": "Replace cap.perms.get+and+cap.perms.set with cap.perms.and (S2)",
+        "witness": {
+          "before": [
+            "%p = call i64 @llvm.cheri.cap.perms.get(i8 addrspace(200)* %cap)",
+            "%m = and i64 %p, %mask",
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.perms.set(i8 addrspace(200)* %cap, i64 %m)"
+          ],
+          "after": [
+            "%new = call i8 addrspace(200)* @llvm.cheri.cap.perms.and(i8 addrspace(200)* %cap, i64 %mask)"
+          ]
+        },
+        "verification": {
+          "status": "verified",
+          "reason": "proved by Z3"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "isa": "riscv",
+    "arch": "riscv64-cheri",
+    "capopt_version": "0.1.0",
+    "created": "2026-07-14T09:20:25+00:00",
+    "max_depth": 3,
+    "counts": {
+      "verified": 4,
+      "conditional": 5,
+      "failed": 4
+    },
+    "proof_log": {
+      "cgetaddr_add_csetaddr_to_cincoffset": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: counterexample_for_ca3)"
+      },
+      "consecutive_cincoffset_fold": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: counterexample_for_ca3)"
+      },
+      "csetbounds_to_csetboundsimm": {
+        "status": "verified",
+        "reason": "equivalent"
+      },
+      "redundant_cmove_elimination": {
+        "status": "verified",
+        "reason": "equivalent"
+      },
+      "cincoffset_zero_to_cmove": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: quick_counterexample)"
+      },
+      "cgetaddr_csetaddr_identity_to_cmove": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: quick_counterexample)"
+      },
+      "cjalr_then_cmove_link_register": {
+        "status": "verified",
+        "reason": "equivalent"
+      },
+      "ir_cap_addr_get_set_to_offset_inc": {
+        "status": "conditional",
+        "reason": "equivalent_under_context (unconditional: counterexample found)"
+      },
+      "ir_cap_perms_get_and_set_to_perms_and": {
+        "status": "verified",
+        "reason": "proved by Z3"
+      }
+    }
+  }
+}

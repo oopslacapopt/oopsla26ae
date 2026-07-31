@@ -1,0 +1,29 @@
+{
+  "arch": "arm_morello",
+  "bench": "531.deepsjeng_r",
+  "c_bnd_delta": null,
+  "c_perm_delta": null,
+  "compile_time_s": null,
+  "extra": {
+    "cycles": 1281176278.0,
+    "cycles_samples": [
+      1281176278.0,
+      1282722047.0,
+      1276874589.0,
+      1271986689.0,
+      1284874445.0
+    ],
+    "metric": "pmcstat",
+    "baseline_cycles": 1311660653.0
+  },
+  "instr_count": 1604000000,
+  "n_runs": 5,
+  "pipeline": "asm_only",
+  "prune_enabled": true,
+  "runtime_s": null,
+  "runtime_samples": [],
+  "schema_version": 1,
+  "smt_queries": null,
+  "smt_time_s": null,
+  "tag_ops_delta": null
+}

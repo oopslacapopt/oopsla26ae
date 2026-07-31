@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Console entry point for the vendored CapOpt package.
+
+"""
+
+import sys
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parents[1]
+for _candidate in (
+    _ROOT / "artifact" / "source" / "superoptimization",
+    _ROOT / "artifact" / "source",
+    _ROOT / "artifact" / "lib",
+):
+    if _candidate.is_dir() and str(_candidate) not in sys.path:
+        sys.path.insert(0, str(_candidate))
+
+from capopt.cli import main
+
+if __name__ == "__main__":
+    raise SystemExit(main())

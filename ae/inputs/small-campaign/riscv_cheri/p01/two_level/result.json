@@ -1,0 +1,38 @@
+{
+  "arch": "riscv_cheri",
+  "bench": "p01",
+  "c_bnd_delta": 0,
+  "c_perm_delta": 0,
+  "compile_time_s": 1607.832944,
+  "extra": {
+    "metric": "icount",
+    "retired_instructions": 527850245.0
+  },
+  "icount": 527850245.0,
+  "icount_samples": [
+    539250392,
+    353964174,
+    515966072,
+    570739536,
+    593682718,
+    533069148,
+    596191504,
+    463413802,
+    522631342,
+    485547544
+  ],
+  "instr_count": 527850245,
+  "metric": "icount",
+  "n_runs": 10,
+  "pipeline": "two_level",
+  "prune_enabled": true,
+  "runtime_samples": [],
+  "tag_ops_delta": 0,
+  "validation_gate": {
+    "metric": "icount",
+    "baseline_value": 590810359.0,
+    "optimized_value": 527850245.0,
+    "min_improvement": 0.005,
+    "decision": "kept_optimized"
+  }
+}

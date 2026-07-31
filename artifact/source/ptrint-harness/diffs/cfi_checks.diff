@@ -1,0 +1,502 @@
+--- cfi_checks-baseline
++++ cfi_checks-cheri
+@@ -5,35 +5,15 @@
+ 	.p2align	4
+ 	.type	cfi_verified_call,@function
+ cfi_verified_call:                      // @cfi_verified_call
+-	.cfi_startproc
+-// %bb.0:                               // %entry
+-	sub	sp, sp, #32
+-	.cfi_def_cfa_offset 32
+-	str	w1, [sp, #12]                   // 4-byte Folded Spill
+-	str	x0, [sp, #16]                   // 8-byte Folded Spill
+-	ldr	x8, [x0]
+-	mov	x9, x8
+-	str	x9, [sp, #24]                   // 8-byte Folded Spill
+-	adrp	x9, .L__unnamed_1
+-	add	x9, x9, :lo12:.L__unnamed_1
+-	subs	x8, x8, x9
+-	subs	x8, x8, #16
+-	ror	x8, x8, #6
+-	subs	x8, x8, #2
+-	b.lo	.LBB0_2
+-	b	.LBB0_1
+-.LBB0_1:                                // %trap
+-	brk	#0x5502
+-.LBB0_2:                                // %cont
+-	ldr	w1, [sp, #12]                   // 4-byte Folded Reload
+-	ldr	x0, [sp, #16]                   // 8-byte Folded Reload
+-	ldr	x8, [sp, #24]                   // 8-byte Folded Reload
+-	ldr	x2, [x8]
+-	add	sp, sp, #32
+-	.cfi_def_cfa_offset 0
+-	br	x2
++.Lfunc_begin0:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	ldr	c2, [c0, #0]
++	ldr	c2, [c2, #0]
++	mov	x9, xzr
++	br	c2
+ .Lfunc_end0:
+-	.size	cfi_verified_call, .Lfunc_end0-cfi_verified_call
++	.size	cfi_verified_call, .Lfunc_end0-.Lfunc_begin0
+ 	.cfi_endproc
+                                         // -- End function
+ 	.hidden	drive_cfi                       // -- Begin function drive_cfi
+@@ -41,137 +21,129 @@
+ 	.p2align	4
+ 	.type	drive_cfi,@function
+ drive_cfi:                              // @drive_cfi
+-	.cfi_startproc
+-// %bb.0:                               // %entry
+-	sub	sp, sp, #48
+-	.cfi_def_cfa_offset 48
+-	stp	x29, x30, [sp, #32]             // 16-byte Folded Spill
+-	add	x29, sp, #32
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	stur	w0, [x29, #-4]                  // 4-byte Folded Spill
++.Lfunc_begin1:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	sub	csp, csp, #64
++	.cfi_def_cfa csp, -64
++	stp	c29, c30, [csp, #32]            // 32-byte Folded Spill
++	add	c29, csp, #32
++	.cfi_def_cfa c29, 32
++	.cfi_offset c30, -16
++	.cfi_offset c29, -32
++	stur	w0, [c29, #-4]                  // 4-byte Folded Spill
+                                         // kill: def $w0 killed $w1
+ 	tbz	w1, #0, .LBB1_2
+ 	b	.LBB1_1
+ .LBB1_1:                                // %cond.true
+ 	bl	_ZL14trusted_widgetv
+-	adrp	x8, _ZZL14trusted_widgetvE7trusted
+-	add	x8, x8, :lo12:_ZZL14trusted_widgetvE7trusted
+-	str	x8, [sp, #16]                   // 8-byte Folded Spill
++	adrp	c0, .L__cap_merged_table
++	ldr	c0, [c0, :lo12:.L__cap_merged_table]
++	str	c0, [csp, #0]                   // 16-byte Folded Spill
+ 	b	.LBB1_3
+ .LBB1_2:                                // %cond.false
+ 	bl	_ZL15fallback_widgetv
+-	adrp	x8, _ZZL15fallback_widgetvE8fallback
+-	add	x8, x8, :lo12:_ZZL15fallback_widgetvE8fallback
+-	str	x8, [sp, #16]                   // 8-byte Folded Spill
++	adrp	c0, .L__cap_merged_table+32
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+32]
++	str	c0, [csp, #0]                   // 16-byte Folded Spill
+ 	b	.LBB1_3
+ .LBB1_3:                                // %cond.end
+-	ldr	x8, [sp, #16]                   // 8-byte Folded Reload
+-	str	x8, [sp]                        // 8-byte Folded Spill
+-	ldr	x8, [x8]
+-	mov	x9, x8
+-	str	x9, [sp, #8]                    // 8-byte Folded Spill
+-	adrp	x9, .L__unnamed_1
+-	add	x9, x9, :lo12:.L__unnamed_1
+-	subs	x8, x8, x9
+-	subs	x8, x8, #16
+-	ror	x8, x8, #6
+-	subs	x8, x8, #2
+-	b.lo	.LBB1_5
+-	b	.LBB1_4
+-.LBB1_4:                                // %trap.i
+-	brk	#0x5502
+-.LBB1_5:                                // %cfi_verified_call.exit
+-	ldur	w1, [x29, #-4]                  // 4-byte Folded Reload
+-	ldr	x0, [sp]                        // 8-byte Folded Reload
+-	ldr	x8, [sp, #8]                    // 8-byte Folded Reload
+-	ldr	x2, [x8]
+-	.cfi_def_cfa wsp, 48
+-	ldp	x29, x30, [sp, #32]             // 16-byte Folded Reload
+-	add	sp, sp, #48
+-	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
+-	br	x2
++	ldur	w1, [c29, #-4]                  // 4-byte Folded Reload
++	ldr	c0, [csp, #0]                   // 16-byte Folded Reload
++	ldr	c2, [c0, #0]
++	ldr	c2, [c2, #0]
++	mov	x9, xzr
++	.cfi_def_cfa csp, 64
++	ldp	c29, c30, [csp, #32]            // 32-byte Folded Reload
++	add	csp, csp, #64
++	.cfi_def_cfa csp, 0
++	.cfi_restore c30
++	.cfi_restore c29
++	br	c2
+ .Lfunc_end1:
+-	.size	drive_cfi, .Lfunc_end1-drive_cfi
++	.size	drive_cfi, .Lfunc_end1-.Lfunc_begin1
+ 	.cfi_endproc
+                                         // -- End function
+ 	.p2align	4                               // -- Begin function _ZL14trusted_widgetv
+ 	.type	_ZL14trusted_widgetv,@function
+ _ZL14trusted_widgetv:                   // @_ZL14trusted_widgetv
+-	.cfi_startproc
+-// %bb.0:                               // %entry
+-	stp	x29, x30, [sp, #-16]!           // 16-byte Folded Spill
+-	.cfi_def_cfa_offset 16
+-	mov	x29, sp
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	adrp	x8, _ZGVZL14trusted_widgetvE7trusted
+-	add	x8, x8, :lo12:_ZGVZL14trusted_widgetvE7trusted
+-	ldaprb	w8, [x8]
++.Lfunc_begin2:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	stp	c29, c30, [csp, #-32]!          // 32-byte Folded Spill
++	.cfi_def_cfa_offset 32
++	mov	c29, csp
++	.cfi_def_cfa c29, 32
++	.cfi_offset c30, -16
++	.cfi_offset c29, -32
++	adrp	c0, .L__cap_merged_table+16
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+16]
++	ldarb	w8, [c0]
+ 	tbnz	w8, #0, .LBB2_3
+ 	b	.LBB2_1
+ .LBB2_1:                                // %init.check
+-	adrp	x0, _ZGVZL14trusted_widgetvE7trusted
+-	add	x0, x0, :lo12:_ZGVZL14trusted_widgetvE7trusted
++	adrp	c0, .L__cap_merged_table+16
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+16]
++	mov	x9, xzr
+ 	bl	__cxa_guard_acquire
+ 	cbz	w0, .LBB2_3
+ 	b	.LBB2_2
+ .LBB2_2:                                // %init
+-	adrp	x0, _ZGVZL14trusted_widgetvE7trusted
+-	add	x0, x0, :lo12:_ZGVZL14trusted_widgetvE7trusted
++	adrp	c0, .L__cap_merged_table+16
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+16]
++	mov	x9, xzr
+ 	bl	__cxa_guard_release
+ 	b	.LBB2_3
+ .LBB2_3:                                // %init.end
+-	.cfi_def_cfa wsp, 16
+-	ldp	x29, x30, [sp], #16             // 16-byte Folded Reload
++	.cfi_def_cfa wsp, 32
++	ldp	c29, c30, [csp], #32            // 32-byte Folded Reload
+ 	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
+-	ret
++	.cfi_restore c30
++	.cfi_restore c29
++	ret	c30
+ .Lfunc_end2:
+-	.size	_ZL14trusted_widgetv, .Lfunc_end2-_ZL14trusted_widgetv
++	.size	_ZL14trusted_widgetv, .Lfunc_end2-.Lfunc_begin2
+ 	.cfi_endproc
+                                         // -- End function
+ 	.p2align	4                               // -- Begin function _ZL15fallback_widgetv
+ 	.type	_ZL15fallback_widgetv,@function
+ _ZL15fallback_widgetv:                  // @_ZL15fallback_widgetv
+-	.cfi_startproc
+-// %bb.0:                               // %entry
+-	stp	x29, x30, [sp, #-16]!           // 16-byte Folded Spill
+-	.cfi_def_cfa_offset 16
+-	mov	x29, sp
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	adrp	x8, _ZGVZL15fallback_widgetvE8fallback
+-	add	x8, x8, :lo12:_ZGVZL15fallback_widgetvE8fallback
+-	ldaprb	w8, [x8]
++.Lfunc_begin3:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	stp	c29, c30, [csp, #-32]!          // 32-byte Folded Spill
++	.cfi_def_cfa_offset 32
++	mov	c29, csp
++	.cfi_def_cfa c29, 32
++	.cfi_offset c30, -16
++	.cfi_offset c29, -32
++	adrp	c0, .L__cap_merged_table+48
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+48]
++	ldarb	w8, [c0]
+ 	tbnz	w8, #0, .LBB3_3
+ 	b	.LBB3_1
+ .LBB3_1:                                // %init.check
+-	adrp	x0, _ZGVZL15fallback_widgetvE8fallback
+-	add	x0, x0, :lo12:_ZGVZL15fallback_widgetvE8fallback
++	adrp	c0, .L__cap_merged_table+48
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+48]
++	mov	x9, xzr
+ 	bl	__cxa_guard_acquire
+ 	cbz	w0, .LBB3_3
+ 	b	.LBB3_2
+ .LBB3_2:                                // %init
+-	adrp	x0, _ZGVZL15fallback_widgetvE8fallback
+-	add	x0, x0, :lo12:_ZGVZL15fallback_widgetvE8fallback
++	adrp	c0, .L__cap_merged_table+48
++	ldr	c0, [c0, :lo12:.L__cap_merged_table+48]
++	mov	x9, xzr
+ 	bl	__cxa_guard_release
+ 	b	.LBB3_3
+ .LBB3_3:                                // %init.end
+-	.cfi_def_cfa wsp, 16
+-	ldp	x29, x30, [sp], #16             // 16-byte Folded Reload
++	.cfi_def_cfa wsp, 32
++	ldp	c29, c30, [csp], #32            // 32-byte Folded Reload
+ 	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
+-	ret
++	.cfi_restore c30
++	.cfi_restore c29
++	ret	c30
+ .Lfunc_end3:
+-	.size	_ZL15fallback_widgetv, .Lfunc_end3-_ZL15fallback_widgetv
++	.size	_ZL15fallback_widgetv, .Lfunc_end3-.Lfunc_begin3
+ 	.cfi_endproc
+                                         // -- End function
+ 	.section	.text._ZN6Gadget6mutateEi,"axG",@progbits,_ZN6Gadget6mutateEi,comdat
+@@ -180,15 +152,16 @@
+ 	.p2align	4
+ 	.type	_ZN6Gadget6mutateEi,@function
+ _ZN6Gadget6mutateEi:                    // @_ZN6Gadget6mutateEi
++.Lfunc_begin4:
+ 	.cfi_startproc
+ // %bb.0:                               // %entry
+ 	mov	w8, #21930                      // =0x55aa
+ 	movk	w8, #21930, lsl #16
+ 	eor	w8, w1, w8
+ 	add	w0, w8, #7
+-	ret
++	ret	c30
+ .Lfunc_end4:
+-	.size	_ZN6Gadget6mutateEi, .Lfunc_end4-_ZN6Gadget6mutateEi
++	.size	_ZN6Gadget6mutateEi, .Lfunc_end4-.Lfunc_begin4
+ 	.cfi_endproc
+                                         // -- End function
+ 	.section	.text._ZN6GadgetD0Ev,"axG",@progbits,_ZN6GadgetD0Ev,comdat
+@@ -197,11 +170,13 @@
+ 	.p2align	4
+ 	.type	_ZN6GadgetD0Ev,@function
+ _ZN6GadgetD0Ev:                         // @_ZN6GadgetD0Ev
+-	.cfi_startproc
+-// %bb.0:                               // %entry
++.Lfunc_begin5:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	mov	x9, xzr
+ 	b	_ZdlPv
+ .Lfunc_end5:
+-	.size	_ZN6GadgetD0Ev, .Lfunc_end5-_ZN6GadgetD0Ev
++	.size	_ZN6GadgetD0Ev, .Lfunc_end5-.Lfunc_begin5
+ 	.cfi_endproc
+                                         // -- End function
+ 	.section	.text._ZN6WidgetD2Ev,"axG",@progbits,_ZN6WidgetD2Ev,comdat
+@@ -210,11 +185,12 @@
+ 	.p2align	4
+ 	.type	_ZN6WidgetD2Ev,@function
+ _ZN6WidgetD2Ev:                         // @_ZN6WidgetD2Ev
+-	.cfi_startproc
+-// %bb.0:                               // %entry
+-	ret
++.Lfunc_begin6:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	ret	c30
+ .Lfunc_end6:
+-	.size	_ZN6WidgetD2Ev, .Lfunc_end6-_ZN6WidgetD2Ev
++	.size	_ZN6WidgetD2Ev, .Lfunc_end6-.Lfunc_begin6
+ 	.cfi_endproc
+                                         // -- End function
+ 	.section	.text._ZN9Scrambler6mutateEi,"axG",@progbits,_ZN9Scrambler6mutateEi,comdat
+@@ -223,13 +199,14 @@
+ 	.p2align	4
+ 	.type	_ZN9Scrambler6mutateEi,@function
+ _ZN9Scrambler6mutateEi:                 // @_ZN9Scrambler6mutateEi
++.Lfunc_begin7:
+ 	.cfi_startproc
+ // %bb.0:                               // %entry
+ 	add	w8, w1, w1, lsl #1
+ 	subs	w0, w8, #17
+-	ret
++	ret	c30
+ .Lfunc_end7:
+-	.size	_ZN9Scrambler6mutateEi, .Lfunc_end7-_ZN9Scrambler6mutateEi
++	.size	_ZN9Scrambler6mutateEi, .Lfunc_end7-.Lfunc_begin7
+ 	.cfi_endproc
+                                         // -- End function
+ 	.section	.text._ZN9ScramblerD0Ev,"axG",@progbits,_ZN9ScramblerD0Ev,comdat
+@@ -238,19 +215,34 @@
+ 	.p2align	4
+ 	.type	_ZN9ScramblerD0Ev,@function
+ _ZN9ScramblerD0Ev:                      // @_ZN9ScramblerD0Ev
+-	.cfi_startproc
+-// %bb.0:                               // %entry
++.Lfunc_begin8:
++	.cfi_startproc
++// %bb.0:                               // %entry
++	mov	x9, xzr
+ 	b	_ZdlPv
+ .Lfunc_end8:
+-	.size	_ZN9ScramblerD0Ev, .Lfunc_end8-_ZN9ScramblerD0Ev
++	.size	_ZN9ScramblerD0Ev, .Lfunc_end8-.Lfunc_begin8
+ 	.cfi_endproc
+                                         // -- End function
+ 	.type	_ZZL14trusted_widgetvE7trusted,@object // @_ZZL14trusted_widgetvE7trusted
+ 	.data
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZZL14trusted_widgetvE7trusted:
+-	.xword	_ZTV6Gadget+16
+-	.size	_ZZL14trusted_widgetvE7trusted, 8
++	.chericap	_ZTV6Gadget+32
++	.size	_ZZL14trusted_widgetvE7trusted, 16
++
++	.hidden	_ZTV6Gadget                     // @_ZTV6Gadget
++	.type	_ZTV6Gadget,@object
++	.section	.data.rel.ro._ZTV6Gadget,"aGw",@progbits,_ZTV6Gadget,comdat
++	.weak	_ZTV6Gadget
++	.p2align	4, 0x0
++_ZTV6Gadget:
++	.chericap	0
++	.chericap	_ZTI6Gadget
++	.chericap	_ZN6Gadget6mutateEi
++	.chericap	_ZN6WidgetD2Ev
++	.chericap	_ZN6GadgetD0Ev
++	.size	_ZTV6Gadget, 80
+ 
+ 	.type	_ZGVZL14trusted_widgetvE7trusted,@object // @_ZGVZL14trusted_widgetvE7trusted
+ 	.local	_ZGVZL14trusted_widgetvE7trusted
+@@ -273,31 +265,44 @@
+ 
+ 	.hidden	_ZTI6Widget                     // @_ZTI6Widget
+ 	.type	_ZTI6Widget,@object
+-	.section	.rodata._ZTI6Widget,"aG",@progbits,_ZTI6Widget,comdat
++	.section	.data.rel.ro._ZTI6Widget,"aGw",@progbits,_ZTI6Widget,comdat
+ 	.weak	_ZTI6Widget
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI6Widget:
+-	.xword	_ZTVN10__cxxabiv117__class_type_infoE+16
+-	.xword	_ZTS6Widget
+-	.size	_ZTI6Widget, 16
++	.chericap	_ZTVN10__cxxabiv117__class_type_infoE+32
++	.chericap	_ZTS6Widget
++	.size	_ZTI6Widget, 32
+ 
+ 	.hidden	_ZTI6Gadget                     // @_ZTI6Gadget
+ 	.type	_ZTI6Gadget,@object
+-	.section	.rodata._ZTI6Gadget,"aG",@progbits,_ZTI6Gadget,comdat
++	.section	.data.rel.ro._ZTI6Gadget,"aGw",@progbits,_ZTI6Gadget,comdat
+ 	.weak	_ZTI6Gadget
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI6Gadget:
+-	.xword	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+-	.xword	_ZTS6Gadget
+-	.xword	_ZTI6Widget
+-	.size	_ZTI6Gadget, 24
++	.chericap	_ZTVN10__cxxabiv120__si_class_type_infoE+32
++	.chericap	_ZTS6Gadget
++	.chericap	_ZTI6Widget
++	.size	_ZTI6Gadget, 48
+ 
+ 	.type	_ZZL15fallback_widgetvE8fallback,@object // @_ZZL15fallback_widgetvE8fallback
+ 	.data
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZZL15fallback_widgetvE8fallback:
+-	.xword	_ZTV9Scrambler+16
+-	.size	_ZZL15fallback_widgetvE8fallback, 8
++	.chericap	_ZTV9Scrambler+32
++	.size	_ZZL15fallback_widgetvE8fallback, 16
++
++	.hidden	_ZTV9Scrambler                  // @_ZTV9Scrambler
++	.type	_ZTV9Scrambler,@object
++	.section	.data.rel.ro._ZTV9Scrambler,"aGw",@progbits,_ZTV9Scrambler,comdat
++	.weak	_ZTV9Scrambler
++	.p2align	4, 0x0
++_ZTV9Scrambler:
++	.chericap	0
++	.chericap	_ZTI9Scrambler
++	.chericap	_ZN9Scrambler6mutateEi
++	.chericap	_ZN6WidgetD2Ev
++	.chericap	_ZN9ScramblerD0Ev
++	.size	_ZTV9Scrambler, 80
+ 
+ 	.type	_ZGVZL15fallback_widgetvE8fallback,@object // @_ZGVZL15fallback_widgetvE8fallback
+ 	.local	_ZGVZL15fallback_widgetvE8fallback
+@@ -312,45 +317,25 @@
+ 
+ 	.hidden	_ZTI9Scrambler                  // @_ZTI9Scrambler
+ 	.type	_ZTI9Scrambler,@object
+-	.section	.rodata._ZTI9Scrambler,"aG",@progbits,_ZTI9Scrambler,comdat
++	.section	.data.rel.ro._ZTI9Scrambler,"aGw",@progbits,_ZTI9Scrambler,comdat
+ 	.weak	_ZTI9Scrambler
+-	.p2align	3, 0x0
++	.p2align	4, 0x0
+ _ZTI9Scrambler:
+-	.xword	_ZTVN10__cxxabiv120__si_class_type_infoE+16
+-	.xword	_ZTS9Scrambler
+-	.xword	_ZTI6Widget
+-	.size	_ZTI9Scrambler, 24
+-
+-	.type	.L__unnamed_1,@object           // @0
+-	.section	.rodata,"a",@progbits
+-	.p2align	3, 0x0
+-.L__unnamed_1:
+-	.xword	0
+-	.xword	_ZTI6Gadget
+-	.xword	_ZN6Gadget6mutateEi
+-	.xword	_ZN6WidgetD2Ev
+-	.xword	_ZN6GadgetD0Ev
+-	.zero	24
+-	.xword	0
+-	.xword	_ZTI9Scrambler
+-	.xword	_ZN9Scrambler6mutateEi
+-	.xword	_ZN6WidgetD2Ev
+-	.xword	_ZN9ScramblerD0Ev
+-	.size	.L__unnamed_1, 104
+-
+-	.type	.L__unnamed_2,@object           // @1
+-	.p2align	2, 0x0
+-.L__unnamed_2:
+-	.size	.L__unnamed_2, 0
+-
+-	.weak	_ZTV6Gadget
+-	.hidden	_ZTV6Gadget
+-.set _ZTV6Gadget, .L__unnamed_1
+-	.size	_ZTV6Gadget, 40
+-	.weak	_ZTV9Scrambler
+-	.hidden	_ZTV9Scrambler
+-.set _ZTV9Scrambler, .L__unnamed_1+64
+-	.size	_ZTV9Scrambler, 40
++	.chericap	_ZTVN10__cxxabiv120__si_class_type_infoE+32
++	.chericap	_ZTS9Scrambler
++	.chericap	_ZTI6Widget
++	.size	_ZTI9Scrambler, 48
++
++	.type	.L__cap_merged_table,@object    // @__cap_merged_table
++	.section	.data.rel.ro,"aw",@progbits
++	.p2align	4, 0x0
++.L__cap_merged_table:
++	.chericap	_ZZL14trusted_widgetvE7trusted
++	.chericap	_ZGVZL14trusted_widgetvE7trusted
++	.chericap	_ZZL15fallback_widgetvE8fallback
++	.chericap	_ZGVZL15fallback_widgetvE8fallback
++	.size	.L__cap_merged_table, 64
++
+ 	.ident	"clang version 17.0.0 (https://git.morello-project.org/morello/llvm-project.git 0303e6f03ed4aede9d0659d294cdb4e692cadafc)"
+ 	.section	".note.GNU-stack","",@progbits
+ 	.addrsig
+@@ -366,6 +351,3 @@
+ 	.addrsig_sym _ZGVZL15fallback_widgetvE8fallback
+ 	.addrsig_sym _ZTS9Scrambler
+ 	.addrsig_sym _ZTI9Scrambler
+-	.addrsig_sym .L__unnamed_1
+-	.addrsig_sym _ZTV6Gadget
+-	.addrsig_sym _ZTV9Scrambler

@@ -1,0 +1,60 @@
+FROM python:3.12-slim-trixie
+
+LABEL org.opencontainers.image.title="CapOpt OOPSLA 2026 artifact (full CHERI environment)"
+LABEL org.opencontainers.image.source="https://github.com/oopslacapopt/oopsla26ae"
+LABEL org.opencontainers.image.licenses="Unlicense AND MIT"
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    VIRTUAL_ENV=/opt/capopt-venv \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/artifact/artifact/lib:/artifact/artifact/source:/artifact/artifact/source/superoptimization \
+    PATH=/opt/capopt-venv/bin:/artifact/bin:${PATH}
+
+# Stock LLVM/clang plus the shared libraries the packaged CHERI-LLVM and
+# QEMU-CHERI binaries link against (glib/pixman/nettle/ncurses/bz2), and
+# the small utilities the benchmark/measurement scripts expect.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        clang lld llvm make file rsync zstd openssh-client \
+        libglib2.0-0t64 libpixman-1-0 libnettle8t64 libncursesw6 \
+        libbz2-1.0 zlib1g libzstd1 libtinfo6 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.lock /tmp/requirements.lock
+RUN /usr/local/bin/python3 -m venv "$VIRTUAL_ENV" \
+    && "$VIRTUAL_ENV/bin/python" -m pip install --no-cache-dir \
+        -r /tmp/requirements.lock \
+    && "$VIRTUAL_ENV/bin/python" -m ipykernel install \
+        --prefix="$VIRTUAL_ENV" \
+        --name=capopt-ae \
+        --display-name="CapOpt AE (Python 3.12)"
+
+# CHERI execution environment, staged by bin/stage-cheri-context.sh:
+#   /opt/cheri/sdk        CHERI-LLVM + riscv64-purecap sysroot + QEMU + bbl
+#   /opt/cheri/kernel     CheriBSD purecap boot kernel
+#   /opt/cheri/*.img.zst  compressed guest disk (bin/setup-qemu-image.sh)
+#   /opt/cheri/morello-sdk  optional (stage with --with-morello)
+COPY --from=cheri-stage / /opt/cheri/
+
+ENV CHERI_LLVM_BIN=/opt/cheri/sdk/bin \
+    CHERI_SYSROOT=/opt/cheri/sdk/sysroot-riscv64-purecap \
+    CHERI_KERNEL=/opt/cheri/kernel/kernel \
+    CHERI_BBL=/opt/cheri/sdk/bbl/riscv64-purecap/bbl \
+    QEMU_CHERI_BIN=/opt/cheri/sdk/bin/qemu-system-riscv64cheri \
+    QEMU_CHERI_IMAGE=/opt/cheri/cheribsd-riscv64-purecap.img \
+    PATH=${PATH}:/opt/cheri/sdk/bin
+
+WORKDIR /artifact
+COPY . /artifact
+
+RUN mkdir -p /artifact/ae-output \
+    && chmod a-w /artifact/notebook/oopsla26-ae.ipynb \
+    && "$VIRTUAL_ENV/bin/python" /artifact/ae/closure_check.py --root /artifact \
+    && "$CHERI_LLVM_BIN/clang" --version >/dev/null \
+    && "$QEMU_CHERI_BIN" --version >/dev/null \
+    && clang --version >/dev/null
+
+EXPOSE 8888
+CMD ["/opt/capopt-venv/bin/python3", "ae/runner.py", "kick-the-tires"]

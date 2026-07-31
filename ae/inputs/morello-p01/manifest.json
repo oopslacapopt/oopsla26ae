@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "experiment": "2026-07-16_o3-start-hd-morello",
+  "paper_location": "Section 6.4, p01 row",
+  "target": "CheriBSD 24.05 Morello purecap",
+  "expected": {
+    "baseline_o3_median_cycles": 8509341.5,
+    "o3_asm_median_cycles": 8494868.5,
+    "improvement_percent": 0.17008366628604576,
+    "applied_rewrites": 0,
+    "iterations": 10,
+    "warmup": 1,
+    "cpu": 1
+  },
+  "files": {
+    "baseline_o3-p01": "11f2f931a37dc6ae04eb6f6fe4ba4006b0feb3f9442878e9da6571f02b3c3b1a",
+    "o3_asm-p01": "11f2f931a37dc6ae04eb6f6fe4ba4006b0feb3f9442878e9da6571f02b3c3b1a"
+  },
+  "provenance": {
+    "source_snapshot_commit": null,
+    "build_compiler_digest": null,
+    "declared_cheri_llvm_commit": "9e82d2969a6",
+    "status": "frozen campaign payload; execution-reproducible, build provenance pending"
+  }
+}
